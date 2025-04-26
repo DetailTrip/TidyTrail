@@ -171,39 +171,78 @@ const CalculatorStep5: React.FC = () => {
         <div className="md:col-span-2">
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
-                  First Name *
+              <div className="space-y-1">
+                <label 
+                  htmlFor="firstName" 
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  First Name <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  value={formState.firstName}
-                  onChange={handleChange}
-                  className={`w-full p-2 border rounded-md ${errors.firstName ? 'border-red-500' : 'border-gray-300'}`}
-                />
+                
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    autoComplete="given-name"
+                    placeholder="Your first name"
+                    {...(errors.firstName ? {'aria-invalid': 'true', 'aria-describedby': 'firstName-error'} : {'aria-invalid': 'false'})}
+                    value={formState.firstName}
+                    onChange={handleChange}
+                    className={`block w-full rounded-md shadow-sm py-2 px-3
+                                ${errors.firstName 
+                                  ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500' 
+                                  : 'border-gray-300 focus:ring-primary focus:border-primary dark:bg-gray-800 dark:border-gray-700 dark:text-white'}`}
+                  />
+                  
+                  {errors.firstName && (
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                      <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                
                 {errors.firstName && (
-                  <p id="firstName-error" className="mt-1 text-sm text-red-600" role="alert">
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400" id="firstName-error">
                     {errors.firstName}
                   </p>
                 )}
               </div>
               
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
-                  Last Name *
+              <div className="space-y-1">
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Last Name <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  value={formState.lastName}
-                  onChange={handleChange}
-                  className={`w-full p-2 border rounded-md ${errors.lastName ? 'border-red-500' : 'border-gray-300'}`}
-                />
+                
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    autoComplete="family-name"
+                    placeholder="Your last name"
+                    {...(errors.lastName ? {'aria-invalid': 'true', 'aria-describedby': 'lastName-error'} : {'aria-invalid': 'false'})}
+                    value={formState.lastName}
+                    onChange={handleChange}
+                    className={`block w-full rounded-md shadow-sm py-2 px-3
+                                ${errors.lastName 
+                                  ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500' 
+                                  : 'border-gray-300 focus:ring-primary focus:border-primary dark:bg-gray-800 dark:border-gray-700 dark:text-white'}`}
+                  />
+                  
+                  {errors.lastName && (
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                      <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                
                 {errors.lastName && (
-                  <p id="lastName-error" className="mt-1 text-sm text-red-600" role="alert">
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400" id="lastName-error">
                     {errors.lastName}
                   </p>
                 )}
