@@ -21,6 +21,9 @@ const CalculatorLayout: React.FC<CalculatorLayoutProps> = ({ children }) => {
 
   // Handle next step navigation
   const handleNext = () => {
+    // Save progress before navigating
+    localStorage.setItem('calculatorState', JSON.stringify(state));
+    
     // Validation logic for each step
     if (currentStep === 1) {
       // Validate property details

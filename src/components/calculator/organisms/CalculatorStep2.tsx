@@ -161,18 +161,40 @@ const CalculatorStep2: React.FC = () => {
             }
             
             return (
-              <ServiceCheckbox
-                key={service.id}
-                id={service.id}
-                name={service.name}
-                description={service.description}
-                price={price}
-                image={service.image}
-                checked={isSelected}
-                onChange={() => handleToggleService(service.id)}
-                recommended={isRecommended}
-                period={service.id === 'pet-waste' || service.id === 'lawn-mowing' ? 'per week' : 'one-time'}
-              />
+              <div
+                onClick={() => handleToggleService(service.id)}
+                className={`relative rounded-lg border-2 overflow-hidden cursor-pointer transition-all 
+                            ${isSelected 
+                              ? 'border-primary bg-primary/5 dark:bg-primary/20' 
+                              : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'}`}
+              >
+                <div className="p-4">
+                  <div className="absolute top-3 right-3">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                      isSelected ? 'bg-primary text-white' : 'border border-gray-300 dark:border-gray-600'
+                    }`}>
+                      {isSelected && (
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-medium mb-1">{service.name}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{service.description}</p>
+                  
+                  <div className="mt-4 flex justify-between items-center">
+                    <PriceDisplay amount={price} period={service.id === 'pet-waste' || service.id === 'lawn-mowing' ? 'weekly' : 'one-time'} />
+                    
+                    {isRecommended && !isSelected && (
+                      <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full">
+                        Recommended
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
             );
           })}
         </div>

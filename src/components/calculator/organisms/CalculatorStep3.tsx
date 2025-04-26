@@ -99,10 +99,77 @@ const CalculatorStep3: React.FC = () => {
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Choose Your Service Frequency</h2>
       <p className="text-gray-600 mb-8">How often would you like your services performed?</p>
       
-      <FrequencySelector
-        value={currentFrequency}
-        onChange={handleFrequencyChange}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        {['one-time', 'bi-weekly', 'weekly'].map((freq) => {
+          const isActive = currentFrequency === freq;
+          const discount = freq === 'weekly' ? 10 : freq === 'bi-weekly' ? 5 : 0;
+          
+          // Calculate example pricing
+          const basePrice = 50; // Example base price
+          const discountedPrice = basePrice * (1 - discount/100);
+          
+          return (
+            <div
+              key={freq}
+              onClick={() => handleFrequencyChange(freq as any)}
+              className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all
+                         ${isActive
+                           ? 'border-primary bg-primary/5 dark:bg-primary/20'
+                           : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'}`}
+            >
+              <div className="absolute top-3 right-3">
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                  isActive ? 'bg-primary text-white' : 'border border-gray-300 dark:border-gray-600'
+                }`}>
+                  {isActive && (
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+              </div>
+              
+              <h3 className="text-lg font-medium mb-1">
+                {freq === 'one-time' ? 'One-time Service' :
+                 freq === 'bi-weekly' ? 'Bi-weekly Service' : 'Weekly Service'}
+              </h3>
+              
+              <div className="mt-2 space-y-1">
+                {freq === 'one-time' && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Perfect for occasional needs
+                  </p>
+                )}
+                {freq === 'bi-weekly' && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Every 2 weeks (2 visits/month)
+                  </p>
+                )}
+                {freq === 'weekly' && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Every week (4 visits/month)
+                  </p>
+                )}
+              </div>
+              
+              <div className="mt-4">
+                <div className="font-medium text-lg">
+                  ${discountedPrice.toFixed(2)}
+                  {discount > 0 && (
+                    <span className="ml-2 line-through text-sm text-gray-500">${basePrice.toFixed(2)}</span>
+                  )}
+                </div>
+                
+                {discount > 0 && (
+                  <span className="inline-block mt-1 px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full">
+                    {discount}% Off
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
       
       <div className="mt-8 p-4 bg-gray-50 rounded-lg">
         <h3 className="font-semibold text-gray-800 mb-2">Service Summary</h3>

@@ -23,6 +23,8 @@ export interface CalculatorState {
     grassHeight?: GrassHeight;
     hasPets: boolean;
     specialConditions: SpecialCondition[];
+    commercialSize?: number | string; // Add this line
+    commercialType?: string;
   };
   services: Service[];
   contact: {
