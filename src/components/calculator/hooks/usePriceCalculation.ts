@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 export const usePriceCalculation = (basePrice: number, options: { discount?: number; surcharge?: number } = {}) => {
     const [price, setPrice] = useState(basePrice);
   
