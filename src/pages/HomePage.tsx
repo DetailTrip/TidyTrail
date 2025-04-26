@@ -19,16 +19,17 @@ const HomePage: React.FC = () => {
       description: "Regular mowing, edging, and trimming to keep your lawn looking its best all season long.",
       image: "https://images.unsplash.com/photo-1589923188900-85f2413db5cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&q=80",
       link: "/services",
-      price: "From $45",
+      price: "From $50",
       featured: true
     },
     {
       id: 2,
-      title: "Garden Maintenance",
-      description: "Weeding, pruning, and plant care to keep your garden beds healthy and attractive.",
-      image: "https://images.unsplash.com/photo-1599629954294-14df9f8291bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&q=80",
+      title: "Pet Waste Cleanup",
+      description: "Regular removal of pet waste to keep your yard clean, sanitary, and enjoyable for the whole family.",
+      image: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&q=80",
       link: "/services",
-      price: "From $60"
+      price: "From $24/visit",
+      featured: true
     },
     {
       id: 3,
@@ -70,10 +71,15 @@ const HomePage: React.FC = () => {
       {/* Hero Section */}
       <Hero
         title="Professional Yard Services in Timmins"
-        subtitle="Creating and maintaining beautiful outdoor spaces for residential and commercial properties"
+        subtitle="Creating beautiful outdoor spaces with essential yard maintenance services."
         backgroundImage="https://images.unsplash.com/photo-1558904541-efa843a96f01?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
-        buttonText="Get a Free Quote"
+        buttonText="Join Our Waitlist"
         buttonLink="/contact"
+        secondaryButtonText="Learn More"
+        secondaryButtonLink="/services"
+        showPreLaunchBadge={true}
+        launchDate="Spring 2025"
+        overlayOpacity="medium"
       />
       
       {/* Services Section */}
@@ -81,7 +87,7 @@ const HomePage: React.FC = () => {
         <div className="container">
           <h2 className="section-title text-primary">Our Services</h2>
           <p className="text-center text-gray-600 max-w-3xl mx-auto mb-12">
-            From regular lawn maintenance to complete yard transformations, our experienced team has you covered.
+            From regular lawn maintenance to specialized pet waste removal, we offer essential yard services tailored to Timmins' seasonal needs.
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -115,7 +121,7 @@ const HomePage: React.FC = () => {
                 Why Choose TidyTrails?
               </h2>
               <p className="text-gray-600 mb-6">
-                Since 2020, TidyTrails has been providing exceptional yard maintenance services to Timmins and surrounding areas. Our dedicated team of professionals takes pride in creating and maintaining beautiful outdoor spaces for our clients.
+                TidyTrails is launching in Timmins with a focus on essential yard maintenance services tailored to our local climate. We're committed to providing reliable, customizable services that keep your outdoor spaces looking their best, so you can enjoy more free time.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -126,8 +132,8 @@ const HomePage: React.FC = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-display font-semibold mb-1">Experienced Team</h3>
-                    <p className="text-sm text-gray-600">Skilled professionals with years of experience</p>
+                    <h3 className="font-display font-semibold mb-1">Dedicated Service</h3>
+                    <p className="text-sm text-gray-600">Focused on quality and customer satisfaction</p>
                   </div>
                 </div>
                 
@@ -150,8 +156,8 @@ const HomePage: React.FC = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-display font-semibold mb-1">Quality Equipment</h3>
-                    <p className="text-sm text-gray-600">Commercial-grade tools for best results</p>
+                    <h3 className="font-display font-semibold mb-1">Pet-Friendly Focus</h3>
+                    <p className="text-sm text-gray-600">Specialized pet waste removal services</p>
                   </div>
                 </div>
                 
@@ -176,11 +182,11 @@ const HomePage: React.FC = () => {
             <div className="relative">
               <img 
                 src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1024&q=80" 
-                alt="TidyTrails team member working on a garden"
+                alt="TidyTrails yard maintenance service"
                 className="rounded-lg shadow-xl"
               />
-              <div className="absolute -bottom-6 -left-6 bg-accent p-4 rounded-lg shadow-lg">
-                <p className="text-primary font-display font-bold text-xl">5+ Years</p>
+              <div className="absolute -bottom-6 -left-6 bg-[#FBB13C] p-4 rounded-lg shadow-lg">
+                <p className="text-primary font-display font-bold text-xl">Locally Owned</p>
                 <p className="text-primary text-sm">Serving Timmins</p>
               </div>
             </div>
@@ -188,29 +194,78 @@ const HomePage: React.FC = () => {
         </div>
       </section>
       
-      {/* Testimonials Section */}
+      {/* Testimonials Section - Replaced with Coming Soon */}
       <section className="section bg-gray-50">
         <div className="container">
-          <h2 className="section-title text-primary">What Our Clients Say</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial) => (
-              <TestimonialCard
-                key={testimonial.id}
-                quote={testimonial.quote}
-                name={testimonial.name}
-                title={testimonial.title}
-                rating={testimonial.rating}
-              />
-            ))}
+          <h2 className="section-title text-primary">Client Testimonials</h2>
+          <div className="text-center max-w-3xl mx-auto p-8 border border-dashed border-primary/30 rounded-lg bg-white">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-primary/50 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <h3 className="font-display font-semibold text-xl mb-4">We're Just Getting Started</h3>
+            <p className="text-gray-600 mb-6">
+              We're excited to launch our services soon! Check back to see what our customers are saying about our work.
+            </p>
+            <p className="text-sm text-gray-500">
+              Be one of our first customers and help us build this section with your feedback!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Pre-Launch Sign-Up Section */}
+      <section className="section bg-[#EEF9F3]">
+        <div className="container">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="section-title text-primary">Get Early Access</h2>
+            <p className="text-gray-600 mb-8">
+              We're preparing to launch in Spring 2025. Join our pre-launch list to receive special introductory pricing and priority scheduling when we open for business.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white p-5 rounded-lg shadow-sm">
+                <div className="w-12 h-12 bg-[#56772A]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#56772A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="font-display font-semibold mb-2">Priority Scheduling</h3>
+                <p className="text-sm text-gray-600">Get first access to our booking calendar</p>
+              </div>
+              
+              <div className="bg-white p-5 rounded-lg shadow-sm">
+                <div className="w-12 h-12 bg-[#56772A]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#56772A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="font-display font-semibold mb-2">Special Pricing</h3>
+                <p className="text-sm text-gray-600">Exclusive rates for early supporters</p>
+              </div>
+              
+              <div className="bg-white p-5 rounded-lg shadow-sm">
+                <div className="w-12 h-12 bg-[#56772A]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#56772A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  </svg>
+                </div>
+                <h3 className="font-display font-semibold mb-2">Launch Updates</h3>
+                <p className="text-sm text-gray-600">Be the first to know when we go live</p>
+              </div>
+            </div>
+            
+            <Link to="/contact" className="btn bg-[#56772A] hover:bg-[#48651F] text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+              Join the Waitlist
+            </Link>
           </div>
         </div>
       </section>
       
       {/* CTA Section */}
       <CTASection
-        title="Ready to Transform Your Outdoor Space?"
-        subtitle="Contact us today for a free, no-obligation quote for your yard maintenance needs."
-        buttonText="Get a Free Quote"
+        title="Be Ready for Spring 2025"
+        subtitle="Join our waitlist today for priority access and special introductory pricing when we launch."
+        buttonText="Join Our Waitlist"
         buttonLink="/contact"
         backgroundImage="https://images.unsplash.com/photo-1597857506137-c8c0f2ebf4ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
       />

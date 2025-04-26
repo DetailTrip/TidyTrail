@@ -14,7 +14,6 @@ const Footer: React.FC = () => {
   // Service links
   const serviceLinks = [
     { path: '/services', label: 'Lawn Mowing' },
-    { path: '/services', label: 'Garden Maintenance' },
     { path: '/services', label: 'Seasonal Cleanup' },
     { path: '/commercial', label: 'Commercial Services' },
     { path: '/services', label: 'Snow Removal' },

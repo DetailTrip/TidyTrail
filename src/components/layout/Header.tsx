@@ -69,6 +69,16 @@ const Header: React.FC = () => {
               {item.label}
             </NavLink>
           ))}
+          <Link 
+            to="/calculator" 
+            className={`font-display font-semibold text-lg transition-colors ${
+              isScrolled 
+                ? 'text-gray-800 hover:text-primary' 
+                : 'text-white hover:text-accent'
+            }`}
+          >
+            Service Calculator
+          </Link>
           <a 
             href="tel:+17058574321" 
             className="btn btn-primary ml-2"
