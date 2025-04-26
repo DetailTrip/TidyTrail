@@ -7,7 +7,6 @@ import Footer from './components/layout/Footer';
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const CommercialPage = lazy(() => import('./pages/CommercialPage'));
-const CalculatorPage = lazy(() => import('./pages/CalculatorPage')); // Add this line
 
 // Loading fallback component
 const PageLoader = () => (
@@ -31,7 +30,6 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/commercial" element={<CommercialPage />} />
-            <Route path="/calculator" element={<CalculatorPage />} /> {/* Add this line */}
             {/* Remove AboutUsPage and ContactPage routes since they don't exist yet */}
             <Route path="*" element={<div className="container py-20 text-center">Page not found</div>} />
           </Routes>
