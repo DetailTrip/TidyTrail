@@ -45,9 +45,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   };
 
   return (
-    <div className={`card h-full transition-transform duration-300 hover:-translate-y-2 relative ${
-      featured ? `border-2 ${colorClasses[colorScheme].split(' ')[0]} ring-2 ${colorClasses[colorScheme].split(' ')[1]}` : ''
-    }`}>
+    <div 
+      className={`card h-full transition-transform duration-300 hover:-translate-y-2 relative ${
+        featured ? `border-2 ${colorClasses[colorScheme].split(' ')[0]} ring-2 ${colorClasses[colorScheme].split(' ')[1]}` : ''
+      }`}
+      data-testid={`service-card-${title.toLowerCase().replace(/\s+/g, '-')}`}
+    >
       {/* Card Image/Icon Area */}
       {image ? (
         <div className="relative h-48 overflow-hidden rounded-t-lg">
@@ -101,7 +104,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           </div>
           <Link 
             to={link} 
-            className={`${colorClasses[colorScheme].split(' ')[2]} font-display font-semibold hover:opacity-80 transition-opacity duration-200`}
+            // Add to the Link component for mobile-friendly touch targets
+            className={`${colorClasses[colorScheme].split(' ')[2]} font-display font-semibold hover:opacity-80 transition-opacity duration-200 py-2 px-3`}
           >
             {isLaunched ? 'Learn More →' : 'Join Waitlist →'}
           </Link>

@@ -54,8 +54,8 @@ const FrequencySelector: React.FC<FrequencySelectorProps> = ({
             className={`
               p-4 border rounded-lg text-center transition-all
               ${value === frequency.value 
-                ? 'border-primary bg-primary/5' 
-                : 'border-gray-200 hover:border-gray-300'}
+                ? 'border-primary bg-primary/5 transform scale-[1.02] shadow-sm' 
+                : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'}
               ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}
             `}
           >
@@ -69,10 +69,10 @@ const FrequencySelector: React.FC<FrequencySelectorProps> = ({
               className="sr-only" // Visually hidden but accessible
             />
             <div className="font-semibold mb-1">{frequency.label}</div>
-            <div className="text-sm text-gray-600">{frequency.description}</div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">{frequency.description}</div>
             {frequency.discount && (
               <div className="mt-2">
-                <span className="inline-block bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">
+                <span className="inline-block bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-100 text-xs font-medium px-2 py-1 rounded-full">
                   {frequency.discount}
                 </span>
               </div>

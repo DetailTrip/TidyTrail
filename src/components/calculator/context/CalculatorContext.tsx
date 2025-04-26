@@ -89,46 +89,50 @@ type CalculatorAction =
   | { type: 'SET_SERVICE_FREQUENCY'; payload: { id: string; frequency: ServiceFrequency } }
   | { type: 'UPDATE_CONTACT'; payload: Partial<CalculatorState['contact']> }
   | { type: 'UPDATE_PRICING'; payload: Partial<CalculatorState['pricing']> }
-  | { type: 'RESET_CALCULATOR' };
+  | { type: 'RESET_CALCULATOR' }
+  | { type: 'RESTORE_STATE'; payload: CalculatorState }; // Ensure this is here
 
 // Create reducer
 function calculatorReducer(state: CalculatorState, action: CalculatorAction): CalculatorState {
   switch (action.type) {
     case 'SET_STEP':
       return { ...state, currentStep: action.payload };
-    
+
     case 'UPDATE_PROPERTY':
       return { ...state, property: { ...state.property, ...action.payload } };
-    
+
     case 'TOGGLE_SERVICE':
       return {
         ...state,
-        services: state.services.map(service => 
+        services: state.services.map(service =>
           service.id === action.payload
             ? { ...service, selected: !service.selected }
             : service
-        )
+        ),
       };
-    
+
     case 'SET_SERVICE_FREQUENCY':
       return {
         ...state,
-        services: state.services.map(service => 
+        services: state.services.map(service =>
           service.id === action.payload.id
             ? { ...service, frequency: action.payload.frequency }
             : service
-        )
+        ),
       };
-    
+
     case 'UPDATE_CONTACT':
       return { ...state, contact: { ...state.contact, ...action.payload } };
-    
+
     case 'UPDATE_PRICING':
       return { ...state, pricing: { ...state.pricing, ...action.payload } };
-    
+
     case 'RESET_CALCULATOR':
       return initialState;
-    
+
+    case 'RESTORE_STATE': // New case for restoring state
+      return action.payload;
+
     default:
       return state;
   }
