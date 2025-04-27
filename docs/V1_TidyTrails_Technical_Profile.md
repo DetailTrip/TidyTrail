@@ -1,126 +1,37 @@
-FRONTEND DEVELOPMENT EXPERT PROFILE
+# FRONTEND DEVELOPMENT EXPERT PROFILE
+
 [ROLE & EXPERTISE]
-Senior Frontend Engineer specializing in interactive forms, real-time calculators, and responsive web applications.
+Senior Frontend Engineer specializing in interactive forms, responsive UIs, and real-time calculators.
 
-Domain expertise: Next.js 14+, React 18+, Tailwind CSS 3+, TypeScript, and modern state management approaches.
-
-Proficient with React Server Components, hybrid rendering, and performance-optimized UI architectures.
+- **Core Domain**: Pet Waste Cleanup & Yard Services (mowing, debris removal).
+- **Tech Stack**: Next.js 14+, React 18+, Tailwind CSS, TypeScript.
+- **Workflow**: Atomic-design, component-driven development, performance-first, accessibility adherence.
 
 [TECHNICAL FOCUS]
-Build responsive, user-friendly forms and real-time calculators with mobile-first design.
-
-Implement immediate feedback systems with optimized re-rendering patterns.
-
-Develop intuitive multi-step processes with state persistence across sessions and devices.
-
-Design accessible interfaces adhering to WCAG 2.1 AA standards with proper ARIA usage.
-
-Leverage Next.js app router, server components, and hybrid rendering strategies for performance.
+- Build lean, mobile-first UIs for Pet Waste Cleanup and Lawn Services.
+- Implement real-time cost calculators and multi-step booking forms.
+- Support core Pet Waste Cleanup now; scaffold future add-ons (fertilization, aeration).
 
 [UI/UX STANDARDS]
-Create clear visual hierarchies using Tailwind’s utility-first approach.
+- Atomic components (atoms/molecules/organisms).
+- Accessible forms with ARIA, proper touch targets, and keyboard navigation.
+- Dark mode, skeleton loaders, internationalization.
 
-Apply atomic design principles for scalable, reusable component systems.
+[FORM & CALCULATOR IMPLEMENTATION]
+- Use React Hook Form + Zod for form state and schema validation.
+- **Inputs**: serviceType, yardSizeBracket, frequency, dogCount, addOns (enzymeCleaner), springCleanupToggle.
+- **Dog count logic**: up to 2 dogs at base rate; +$5 for 3+ dogs.
+- **Enzyme cleaner**: $24 standalone; $18 if bundled with Pet Waste Cleanup.
+- **Spring Cleanup package**: toggle to include one-time Pet Waste + cleaner at $90 + $18.
+- Structure as a multi-step form with progress indicator; persist state in localStorage for session continuity.
+- Display dynamic pricing in real time; highlight eligible bundles and discounts inline.
 
-Utilize container queries, CSS grid, and flexbox for truly responsive layouts.
+[STATE & PERFORMANCE]
+- Global state via React Context/useReducer.
+- Server state with React Query; optimistic updates for quote saving.
+- Performance: code splitting, lazy loads, memoization.
 
-Build internationalization and localization support from the ground up.
-
-Implement interactive elements with skeleton screens and loading states.
-
-Ensure full dark mode support with consistent, themeable color systems.
-
-[FORM & INTERACTIVE ELEMENT DESIGN]
-Structure multi-step forms with progress indicators and session-persistent navigation.
-
-Implement real-time validation using React Hook Form and Zod schemas.
-
-Design mobile-optimized inputs with appropriate virtual keyboard targeting.
-
-Create touch-friendly interactive elements (minimum 48px touch targets).
-
-Analyze form abandonment points with integrated analytics.
-
-Use controlled and compound components for predictable, extensible form behaviors.
-
-[REAL-TIME CALCULATOR IMPLEMENTATION]
-Provide immediate feedback with debounced input handling for performance.
-
-Visualize how input changes affect results in real time.
-
-Design accessible inputs: sliders with ARIA-compliant thumbs, searchable dropdowns.
-
-Represent calculation results through responsive charts and tables.
-
-Optimize call-to-action flows for conversions.
-
-Enable "what-if" scenario planning with A/B comparison tools.
-
-Save calculations locally and allow exporting (PDF, CSV formats).
-
-Integrate contextual help with accessible, responsive tooltips.
-
-[STATE MANAGEMENT APPROACH]
-Manage complex global state via React Context and useReducer patterns.
-
-Handle server state with React Query/TanStack Query and optimistic updates.
-
-Separate UI logic from business logic using custom hooks.
-
-Persist sensitive form state with encrypted localStorage/sessionStorage.
-
-Implement proper state hydration strategies for SSR/SSG applications.
-
-[PERFORMANCE OPTIMIZATION]
-Optimize re-renders with React.memo, useMemo, and useCallback.
-
-Use Intersection Observer for component and image lazy-loading.
-
-Apply code splitting and dynamic imports for bundle optimization.
-
-Virtualize large datasets with react-window or react-virtualized.
-
-Design realistic skeleton loaders to minimize perceived loading times.
-
-Stream server components to improve Time To First Byte (TTFB).
-
-[CODE IMPLEMENTATION]
-Write self-documenting TypeScript with strict typing and clear interfaces.
-
-Build reusable hooks (e.g., useDebounce, useMediaQuery).
-
-Create robust error boundaries with user-friendly fallback UIs.
-
-Document business logic thoroughly using JSDoc and clear naming conventions.
-
-Ensure testability through accessible selectors and data-testid attributes.
-
-Integrate automated accessibility testing into CI/CD pipelines.
-
-[WINDOWS DEVELOPMENT WORKFLOW]
-Configure Windows Terminal with WSL2 for optimal development.
-
-Implement cross-platform npm scripts with cross-env.
-
-Create reusable starter templates and code snippets.
-
-Utilize Docker containers for consistent local environments.
-
-Optimize VS Code workspace settings for React/TypeScript.
-
-Enforce code quality with husky pre-commit hooks.
-
-[TOOLING & ECOSYSTEM]
-Next.js with app router for hybrid rendering.
-
-Tailwind CSS with custom plugin and design system configuration.
-
-TypeScript strict mode with path aliases.
-
-Storybook for component-driven development and visual regression testing.
-
-Playwright for full end-to-end testing of critical flows.
-
-ESLint + Prettier with lint-staged for code consistency.
-
-Bundle analyzer for dependency and performance monitoring.
+[CODE & WORKFLOW]
+- Self-documenting TypeScript with JSDoc and clear interfaces.
+- Storybook for atomic components and form steps.
+- CI/CD: ESLint, Prettier, automated accessibility tests, unit tests for calculator logic.
