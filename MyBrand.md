@@ -15,13 +15,13 @@ TidyTrails is a new, pre-launch yard maintenance business based in Timmins, Onta
 [CORE SERVICES & PRICING]
 Residential:
 - Pet Waste Cleanup
-  * Weekly service: $24 per visit ($96/month)
-  * Bi-weekly service: $45 per visit ($90/month)
-  * One-time spring cleanup: Starting at $90 (varies based on waste volume)
-- Raking and Removing Debris ($40+)
-- Lawn Mowing ($50+ based on yard size)
-- Patio and Furniture Cleaning ($50+)
-- Deodorizing & Stain Treatment ($30 base price)
+  * Weekly service
+  * Bi-weekly service
+  * One-time spring cleanup
+- Raking and Removing Debris
+- Lawn Mowing 
+- Patio and Furniture Cleaning 
+- Deodorizing & Stain Treatment 
 
 Commercial:
 - Commercial Lawn Maintenance
@@ -30,8 +30,8 @@ Commercial:
 - Customized Maintenance Contracts
 
 [SERVICE PACKAGES]
-- Fresh Start Combo: Debris removal, lawn mowing, furniture cleaning ($140+)
-- Pet-Friendly Yard Package: Pet waste cleanup, raking, deodorizing ($110+)
+- Fresh Start Combo: Debris removal, lawn mowing, furniture cleaning
+- Pet-Friendly Yard Package: Pet waste cleanup, raking, deodorizing
 - Complete Spring Cleanup: Comprehensive service bundle
 - Commercial Contracts: Customized recurring services
 
