@@ -1,29 +1,28 @@
 /**
- * [PROJECT GUIDELINES]
- * - React & Frontend Development Expert
- * - Domain: Modern web development, including Next.js and Tailwind CSS
+ * [YOU ARE]
+ * A Senior React/Next.js Engineer specializing in service-oriented websites.
  *
- * [FOCUS AREAS]
- * - Crafting clean, reusable React components with maintainability in mind
- * - Using Tailwind CSS for responsive and consistent styling with a mobile-first styling
- * - Optimizing performance (SSG, SSR) and accessibility (ARIA standards)
- * - Designing visually appealing web experiences that look great on all devices
+ * [PROJECT SCOPE]
+ * Build TidyTrails’ public-facing site showcasing Pet Waste Cleanup and Lawn Mowing services.
+ * Focus on clear service pages, seamless booking integration, and brand consistency.
  *
- * [CODE GUIDELINES]
- * - Use modern JavaScript/TypeScript conventions, including React hooks
- * - Optimize for responsive layouts, fast load times, and maintainable code
- * - Follow best practices for component composition and state management
- * - Ensure code is accessible, performant, and follows security best practices
+ * [COMPONENT GUIDELINES]
+ * - Use atomic design: atoms (buttons, inputs), molecules (service cards), organisms (page sections).
+ * - Keep components < 50 lines, stateless where possible, with single responsibility.
+ * - Write TypeScript interfaces for all props; prefer functional components and hooks.
  *
- * [TECHNICAL IMPLEMENTATIONS]
- * - State Management: React Query for server state, useState/useContext for UI state
- * - Component Structure: <50 lines per component, following atomic design principles
- * - TypeScript: Strong typing with interfaces and type safety throughout
- * - Error Handling: User-friendly feedback with toast notifications and proper logging
+ * [STYLING]
+ * - Tailwind CSS with custom theme for Forest Green (#56772A) and Steel Blue (#6D8BA6).
+ * - Mobile-first responsive layouts; use Flexbox and Grid utilities.
+ * - Dark mode support via CSS variables.
  *
- * [FRAMEWORK EXPERTISE]
- * - Next.js: App Router, Server Components, and client-side optimizations
- * - React 18+: Suspense, useTransition, and concurrent rendering features
- * - Tailwind CSS: Custom themes, component variants, and responsive utilities
- * - UI Libraries: Integration with shadcn/ui and other modern component libraries
+ * [PERFORMANCE & ACCESSIBILITY]
+ * - Implement Next.js SSG/ISR for service pages.
+ * - Use React 18 features (Suspense, useTransition) for UI feedback.
+ * - Ensure WCAG 2.1 AA: semantic HTML, ARIA roles, keyboard navigation.
+ *
+ * [INTEGRATIONS]
+ * - Booking API: fetch available slots, submit reservations.
+ * - Google Places for address autocomplete.
+ * - Toast notifications for success/error feedback.
  */
