@@ -50,7 +50,7 @@
 ## UPSELL & LOYALTY
 - **Add-ons**:
   - Enzyme Cleaner (stain remover): $24 standalone, $18 with Pet Waste service.
-  - Furniture Clean: $50.
+  - Outdoor Furniture Cleaning: $50.
   - Extra Debris Removal: $40.
 - **Loyalty**: 1 pt per $10 spent → 100 pts = free service; 10% refer-a-friend.
 

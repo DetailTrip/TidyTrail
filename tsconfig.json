@@ -1,25 +1,39 @@
 ﻿{
   "compilerOptions": {
+    /* Basic */
     "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["DOM", "ES2020"],
     "module": "ESNext",
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
+    "moduleResolution": "Node",
     "jsx": "react-jsx",
+
+    /* Paths & Aliases (match vite.config.ts) */
+    "baseUrl": ".",
+    "paths": {
+      "@/*":            ["src/*"],
+      "@components/*":  ["src/components/*"],
+      "@features/*":    ["src/features/*"],
+      "@booking/*":     ["src/features/booking/*"],
+      "@utils/*":       ["src/utils/*"]
+    },
+
+    /* Strictness & Quality */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+
+    /* Emit & Source Maps */
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    /* Output */
+    "outDir": "dist",
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["node_modules", "dist"]
 }
