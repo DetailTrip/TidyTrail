@@ -1,16 +1,18 @@
-// src/main.tsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
-import App from "@/App";             // thanks to the @ alias in vite.config.ts
-import "@/styles/global.css";        // Tailwind’s base & your custom styles
+import App from "@/App";
+import { BookingProvider } from "@booking/context/BookingContext";   // ← add this!
 
-// Create the root element once Vite injects <div id="root"></div> into index.html
+import "@/styles/global.css";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <BookingProvider> {/* ← wrap everything inside the provider */}
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </BookingProvider>
   </React.StrictMode>
 );
