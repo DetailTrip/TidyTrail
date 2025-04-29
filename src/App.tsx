@@ -1,11 +1,41 @@
-﻿import React from 'react';
+﻿// src/App.tsx
+import React from "react";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
 
-const App: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold text-center mt-8">Welcome to TidyTrails</h1>
-    </div>
-  );
-};
+import HomePage from "@/pages/HomePage";
+import BookingWizard from "@booking/components/BookingWizard"; 
+
+/** Layout wrapper */
+const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="min-h-screen flex flex-col bg-gray-100">
+    <header className="bg-white shadow p-4 flex justify-between items-center">
+      <Link to="/" className="text-xl font-bold text-tidy-green">
+        TidyTrails
+      </Link>
+      <Link
+        to="/booking"
+        className="px-4 py-2 rounded bg-tidy-green text-white hover:bg-green-800"
+      >
+        Book Now
+      </Link>
+    </header>
+
+    <main className="flex-1">{children}</main>
+
+    <footer className="text-center text-sm text-gray-500 p-4">
+      © {new Date().getFullYear()} TidyTrails
+    </footer>
+  </div>
+);
+
+const App: React.FC = () => (
+  <Shell>
+    <Routes>
+      <Route path="/" element={<HomePage />} />    {/* <-- Load your real HomePage */}
+      <Route path="/booking" element={<BookingWizard />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  </Shell>
+);
 
 export default App;

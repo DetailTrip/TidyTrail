@@ -7,12 +7,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#56772A',     // Forest Green
-        secondary: '#6D8BA6',   // Steel Blue
-        accent: '#FBB13C',      // Golden Yellow
-        lightgreen: '#EEF9F3',  // Light Green
-        skyblue: '#94C0E9',     // Sky Blue
-        offWhite: '#FAFAFA',    // Off-White
+        tidy: {
+          green: '#3F7D20',    // Spruce Green → Main brand color
+          blue: '#1B3A4B',     // Deep Ocean → Dark text color
+          gold: '#E8AA4C',     // Harvest Gold → CTA accent color
+          mist: '#EEF5F2',     // Mint Mist → Backgrounds
+          slate: '#1F2937',    // Night Slate → Optional dark footer
+        },
       },
       fontFamily: {
         display: ['"Lato"', 'sans-serif'],
