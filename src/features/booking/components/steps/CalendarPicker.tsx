@@ -1,15 +1,18 @@
 // src/features/booking/components/steps/CalendarPicker.tsx
+
 import React, { useState } from "react";
 import { useBookingContext } from "@booking/context/BookingContext";
+import { useAvailability } from "@booking/hooks/useAvailability";
 
 const CalendarPicker: React.FC = () => {
   const { bookingData, updateBooking } = useBookingContext();
   const today = new Date().toISOString().split("T")[0]; // format: YYYY-MM-DD
 
   const [selectedDate, setSelectedDate] = useState<string>(bookingData.firstServiceDate || "");
+  const { data, isLoading, isError } = useAvailability(selectedDate);
 
   const handleContinue = () => {
-    if (selectedDate) {
+    if (selectedDate && data?.available) {
       updateBooking({ firstServiceDate: selectedDate });
     }
   };
@@ -37,11 +40,16 @@ const CalendarPicker: React.FC = () => {
           placeholder="Select a date"
           className="border p-3 rounded-lg w-full max-w-xs mx-auto text-center"
         />
+        {isLoading && <p className="text-sm text-gray-500 mt-2">Checking availability...</p>}
+        {isError && <p className="text-sm text-red-600 mt-2">Error loading availability.</p>}
+        {data?.available === false && (
+          <p className="text-sm text-red-600 mt-2">Sorry, that date is fully booked.</p>
+        )}
       </div>
 
       <button
         onClick={handleContinue}
-        disabled={!selectedDate}
+        disabled={!selectedDate || data?.available === false || isLoading}
         className="bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-8 rounded disabled:opacity-50 disabled:cursor-not-allowed mt-6"
       >
         Continue
@@ -51,3 +59,4 @@ const CalendarPicker: React.FC = () => {
 };
 
 export default CalendarPicker;
+

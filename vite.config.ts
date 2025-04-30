@@ -15,6 +15,9 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5173,          // change if you prefer another dev port
+    port: 5173,
+    proxy: {
+      "/api": "http://localhost:3001" // Proxy API requests to Express backend
+    },
   },
 });
