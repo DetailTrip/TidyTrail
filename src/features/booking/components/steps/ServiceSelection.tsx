@@ -1,6 +1,8 @@
 // src/features/booking/components/steps/ServiceSelection.tsx
+
 import React, { useState } from "react";
 import { useBookingContext } from "@booking/context/BookingContext";
+import { Frequency, WasteLevel } from "@booking/utils/pricingLogic";
 
 const frequencies = [
   { label: "Weekly", value: "weekly" },
@@ -17,10 +19,9 @@ const wasteLevels = [
 
 const ServiceSelection: React.FC = () => {
   const { bookingData, updateBooking } = useBookingContext();
-  
+
   const [localFrequency, setLocalFrequency] = useState<string>(bookingData.frequency || "");
   const [localWaste, setLocalWaste] = useState<string>(bookingData.wasteLevel || ""); // If One-Time
-  
   const [dogCount, setDogCount] = useState<number>(bookingData.dogCount || 1);
   const [selectedAreas, setSelectedAreas] = useState<string[]>(bookingData.areas || []);
   const [addEnzymeCleaner, setAddEnzymeCleaner] = useState<boolean>(bookingData.addOns?.includes("enzymeCleaner") || false);
@@ -33,8 +34,8 @@ const ServiceSelection: React.FC = () => {
 
   const handleContinue = () => {
     updateBooking({
-      frequency: localFrequency,
-      wasteLevel: localFrequency === "onetime" ? localWaste : undefined,
+      frequency: localFrequency as Frequency,
+      wasteLevel: localFrequency === "onetime" ? (localWaste as WasteLevel) : undefined,
       dogCount,
       areas: selectedAreas,
       addOns: addEnzymeCleaner ? ["enzymeCleaner"] : [],

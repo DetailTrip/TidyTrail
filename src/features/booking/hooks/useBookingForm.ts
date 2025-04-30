@@ -1,20 +1,29 @@
 // src/features/booking/hooks/useBookingForm.ts
-import { useContext } from "react";
-import { BookingContext } from "@booking/context/BookingContext";
+
+import { useBookingContext } from "@booking/context/BookingContext";
+import {
+  serviceSelectionSchema,
+  calendarSchema,
+  customerInfoSchema,
+} from "@utils/validation";
 
 export const useBookingForm = () => {
-  const { bookingData, setBookingData } = useContext(BookingContext);
+  const { bookingData, updateBooking } = useBookingContext(); // ✅ Correct usage
 
-  // Dummy validation — just return true for now
-  const validateStep = () => {
-    return true;
+  const validateStep = (step: number) => {
+    try {
+      if (step === 0) serviceSelectionSchema.parse(bookingData);
+      if (step === 1) calendarSchema.parse(bookingData);
+      if (step === 2) customerInfoSchema.parse(bookingData);
+      return true;
+    } catch (err) {
+      console.error("Validation error:", err);
+      return false;
+    }
   };
 
   const updateField = (field: string, value: any) => {
-    setBookingData((prev: any) => ({
-      ...prev,
-      [field]: value,
-    }));
+    updateBooking({ [field]: value }); // ✅ Call updateBooking, not setBookingData
   };
 
   return {
@@ -23,3 +32,4 @@ export const useBookingForm = () => {
     updateField,
   };
 };
+
