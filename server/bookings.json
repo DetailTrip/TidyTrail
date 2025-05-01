@@ -1,0 +1,97 @@
+[
+  {
+    "id": 1746052773645,
+    "frequency": "biweekly",
+    "dogCount": 1,
+    "areas": [
+      "Side Yard"
+    ],
+    "addOns": [
+      "enzymeCleaner"
+    ],
+    "firstServiceDate": "2025-05-05",
+    "name": "Pat Forest",
+    "phone": "7054065552",
+    "email": "patriceforest@outlook.com",
+    "address": "333 7th",
+    "total": 63,
+    "receivedAt": "2025-04-30T22:39:33.645Z"
+  },
+  {
+    "id": 1746062518750,
+    "frequency": "weekly",
+    "dogCount": 2,
+    "areas": [
+      "Back Yard"
+    ],
+    "addOns": [
+      "enzymeCleaner"
+    ],
+    "firstServiceDate": "2025-06-03",
+    "name": "jess",
+    "phone": "7052258888",
+    "email": "jess@hotmail.com",
+    "address": "123 tetas",
+    "total": 42,
+    "receivedAt": "2025-05-01T01:21:58.750Z"
+  },
+  {
+    "id": 1746063075201,
+    "frequency": "onetime",
+    "dogCount": 2,
+    "areas": [
+      "Back Yard",
+      "Front Yard"
+    ],
+    "addOns": [
+      "enzymeCleaner"
+    ],
+    "firstServiceDate": "2025-06-03",
+    "name": "jess",
+    "phone": "7052258888",
+    "email": "jess@hotmail.com",
+    "address": "123 tetas",
+    "wasteLevel": "moderate",
+    "total": 138,
+    "receivedAt": "2025-05-01T01:31:15.201Z"
+  },
+  {
+    "id": 1746063078305,
+    "frequency": "onetime",
+    "dogCount": 2,
+    "areas": [
+      "Back Yard",
+      "Front Yard"
+    ],
+    "addOns": [
+      "enzymeCleaner"
+    ],
+    "firstServiceDate": "2025-06-03",
+    "name": "jess",
+    "phone": "7052258888",
+    "email": "jess@hotmail.com",
+    "address": "123 tetas",
+    "wasteLevel": "moderate",
+    "total": 138,
+    "receivedAt": "2025-05-01T01:31:18.305Z"
+  },
+  {
+    "id": 1746063174116,
+    "frequency": "twice",
+    "dogCount": 1,
+    "areas": [
+      "Front Yard",
+      "Patio/Driveway"
+    ],
+    "addOns": [
+      "enzymeCleaner"
+    ],
+    "firstServiceDate": "2025-06-03",
+    "name": "jack",
+    "phone": "7052258888",
+    "email": "kakas@hotmail.com",
+    "address": "1343 faee",
+    "total": 38,
+    "receivedAt": "2025-05-01T01:32:54.116Z"
+  }
+]

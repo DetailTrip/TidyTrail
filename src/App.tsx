@@ -3,7 +3,8 @@ import React from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
 
 import HomePage from "@/pages/HomePage";
-import BookingWizard from "@booking/components/BookingWizard"; 
+import BookingWizard from "@booking/components/BookingWizard";
+import AdminDashboard from "@/pages/AdminDashboard"; // ✅ Import admin page
 
 /** Layout wrapper */
 const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -31,8 +32,9 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 const App: React.FC = () => (
   <Shell>
     <Routes>
-      <Route path="/" element={<HomePage />} />    {/* <-- Load your real HomePage */}
+      <Route path="/" element={<HomePage />} />
       <Route path="/booking" element={<BookingWizard />} />
+      <Route path="/admin" element={<AdminDashboard />} /> {/* ✅ Admin route */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   </Shell>
