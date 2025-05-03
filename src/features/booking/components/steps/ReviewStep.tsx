@@ -1,5 +1,4 @@
 // src/features/booking/components/steps/ReviewStep.tsx
-
 import React from "react";
 import { useBookingContext } from "@booking/context/BookingContext";
 import { calculatePricing, Frequency, WasteLevel } from "@booking/utils/pricingLogic";
@@ -8,15 +7,8 @@ import { fullBookingSchema } from "@utils/validation";
 
 const ReviewStep: React.FC = () => {
   const { bookingData } = useBookingContext();
-  const {
-  mutate,
-  status,
-  isSuccess,
-  isError,
-  error,
-} = useBookAppointment();
-
-const isLoading = status === "pending";
+  const { mutate, status, isSuccess, isError, error } = useBookAppointment();
+  const isLoading = status === "pending";
 
   if (!bookingData.frequency || !bookingData.dogCount) {
     return <div className="text-center text-gray-600">Missing required booking data.</div>;

@@ -9,7 +9,7 @@ import AdminDashboard from "@/pages/AdminDashboard"; // ✅ Import admin page
 /** Layout wrapper */
 const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="min-h-screen flex flex-col bg-gray-100">
-    <header className="bg-white shadow p-4 flex justify-between items-center">
+    <header className="sticky top-0 z-50 bg-white shadow p-4 flex justify-between items-center">
       <Link to="/" className="text-xl font-bold text-tidy-green">
         TidyTrails
       </Link>

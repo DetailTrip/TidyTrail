@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import type { Frequency, WasteLevel } from "@booking/utils/pricingLogic";
 
-// 1. Define the shape of the context
 interface BookingData {
   serviceType?: string;
   yardSize?: string;
@@ -26,10 +25,8 @@ interface BookingContextType {
 
 const STORAGE_KEY = "tidytrails-booking-draft";
 
-// 2. Create and export the context
 export const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
-// 3. Custom hook to access the context
 export const useBookingContext = () => {
   const context = useContext(BookingContext);
   if (!context) {
@@ -38,7 +35,6 @@ export const useBookingContext = () => {
   return context;
 };
 
-// 4. Provider component
 export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [bookingData, setBookingData] = useState<BookingData>(() => {
     try {
@@ -63,4 +59,3 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     </BookingContext.Provider>
   );
 };
-

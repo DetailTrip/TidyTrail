@@ -1,15 +1,26 @@
-import HomeHero from "@/components/organisms/HomeHero";
-import HowItWorks from "@/components/organisms/HowItWorks";
-import PricingPreview from "@/components/organisms/PricingPreview";
-import FinalCallToAction from "@/components/organisms/FinalCallToAction";
+// src/pages/HomePage.tsx
+
+import React from "react";
+import HeroSection from "@components/organisms/HeroSection";
+import WhyChooseUs from "@components/organisms/WhyChooseUs";
+import HowItWorks from "@components/organisms/HowItWorks";
+import PricingPreview from "@components/organisms/PricingPreview";
+import TrustSection from "@components/organisms/TrustSection";
+import FAQSection from "@components/organisms/FAQSection";
+import FinalCTA from "@components/organisms/FinalCTA";
+import MobileStickyNav from "@components/layout/MobileStickyNav";
 
 const HomePage: React.FC = () => {
   return (
     <>
-      <HomeHero />
+      <HeroSection />
+      <WhyChooseUs />
       <HowItWorks />
       <PricingPreview />
-      <FinalCallToAction />
+      <TrustSection />
+      <FAQSection />
+      <FinalCTA />
+      <MobileStickyNav />
     </>
   );
 };
