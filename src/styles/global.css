@@ -9,3 +9,9 @@
   --brand-off-white: #FAFAFA;
   --brand-golden-yellow: #FBB13C;
 }
+
+/* styles.css or global.css */
+.label-required::after {
+  content: " *";
+  color: #dc2626; /* Tailwind red-600 */
+}

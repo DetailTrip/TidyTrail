@@ -93,5 +93,151 @@
     "address": "1343 faee",
     "total": 38,
     "receivedAt": "2025-05-01T01:32:54.116Z"
+  },
+  {
+    "id": 1746305608994,
+    "frequency": "onetime",
+    "addOns": [],
+    "wasteLevel": "moderate",
+    "dogCount": 2,
+    "areas": [
+      "Back Yard"
+    ],
+    "firstServiceDate": "2025-05-12",
+    "name": "Pat Forest",
+    "phone": "7054065552",
+    "email": "patriceforest@outlook.com",
+    "address": "333 7th",
+    "total": 120,
+    "receivedAt": "2025-05-03T20:53:28.995Z"
+  },
+  {
+    "id": 1746305754561,
+    "frequency": "biweekly",
+    "addOns": [
+      "enzymeCleaner"
+    ],
+    "wasteLevel": "moderate",
+    "dogCount": 3,
+    "areas": [
+      "Back Yard"
+    ],
+    "firstServiceDate": "2025-05-12",
+    "name": "Pat Forest",
+    "phone": "7054065552",
+    "email": "patriceforest@outlook.com",
+    "address": "333 7th",
+    "total": 68,
+    "receivedAt": "2025-05-03T20:55:54.561Z"
+  },
+  {
+    "id": 1746306389494,
+    "frequency": "onetime",
+    "addOns": [
+      "enzymeCleaner"
+    ],
+    "wasteLevel": "moderate",
+    "dogCount": 3,
+    "areas": [
+      "Back Yard"
+    ],
+    "firstServiceDate": "2025-05-12",
+    "name": "Pat Forest",
+    "phone": "7054065552",
+    "email": "patriceforest@outlook.com",
+    "address": "333 8989",
+    "total": 138,
+    "receivedAt": "2025-05-03T21:06:29.494Z"
+  },
+  {
+    "id": 1746306509799,
+    "frequency": "biweekly",
+    "addOns": [
+      "enzymeCleaner"
+    ],
+    "wasteLevel": "moderate",
+    "dogCount": 3,
+    "areas": [
+      "Back Yard"
+    ],
+    "firstServiceDate": "2025-05-12",
+    "name": "Pat Forest",
+    "phone": "7054065552",
+    "email": "patriceforest@outlook.com",
+    "address": "333 8989",
+    "total": 68,
+    "receivedAt": "2025-05-03T21:08:29.799Z"
+  },
+  {
+    "id": 1746308423852,
+    "frequency": "onetime",
+    "addOns": [
+      "enzymeCleaner"
+    ],
+    "wasteLevel": "heavy",
+    "dogCount": 3,
+    "areas": [
+      "Back Yard"
+    ],
+    "firstServiceDate": "2025-05-12",
+    "name": "Pat Forest",
+    "phone": "7054065552",
+    "email": "patriceforest@outlook.com",
+    "address": "333 6666",
+    "total": 168,
+    "receivedAt": "2025-05-03T21:40:23.852Z"
+  },
+  {
+    "id": 1746314861217,
+    "frequency": "onetime",
+    "addOns": [],
+    "areas": [
+      "Front Yard"
+    ],
+    "dogCount": 2,
+    "wasteLevel": "moderate",
+    "firstServiceDate": "2025-05-07",
+    "name": "Pat Forest",
+    "phone": "7054065552",
+    "email": "patriceforest@outlook.com",
+    "address": "333 7th",
+    "total": 120,
+    "receivedAt": "2025-05-03T23:27:41.217Z"
+  },
+  {
+    "id": 1746314995305,
+    "frequency": "onetime",
+    "addOns": [],
+    "areas": [
+      "Front Yard"
+    ],
+    "dogCount": 2,
+    "wasteLevel": "moderate",
+    "firstServiceDate": "2025-05-07",
+    "name": "Pat Forest",
+    "phone": "7054065552",
+    "email": "patriceforest@outlook.com",
+    "address": "333 7th",
+    "referralCode": "TIDY10",
+    "total": 110,
+    "receivedAt": "2025-05-03T23:29:55.305Z"
+  },
+  {
+    "id": 1746319535025,
+    "frequency": "weekly",
+    "addOns": [],
+    "areas": [
+      "Front Yard"
+    ],
+    "dogCount": 2,
+    "wasteLevel": "moderate",
+    "firstServiceDate": "2025-05-07",
+    "name": "Pat Forest",
+    "phone": "7054065552",
+    "email": "patriceforest@outlook.com",
+    "address": "333 7th",
+    "referralCode": "TIDY10",
+    "total": 86,
+    "receivedAt": "2025-05-04T00:45:35.025Z"
   }
 ]

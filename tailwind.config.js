@@ -1,4 +1,6 @@
-﻿/** @type {import('tailwindcss').Config} */
+﻿// tailwind.config.js
+import plugin from 'tailwindcss/plugin'
+
 export default {
   content: [
     "./index.html",
@@ -8,11 +10,11 @@ export default {
     extend: {
       colors: {
         tidy: {
-          green: '#3F7D20',    // Spruce Green → Main brand color
-          blue: '#1B3A4B',     // Deep Ocean → Dark text color
-          gold: '#E8AA4C',     // Harvest Gold → CTA accent color
-          mist: '#EEF5F2',     // Mint Mist → Backgrounds
-          slate: '#1F2937',    // Night Slate → Optional dark footer
+          green: '#3F7D20',
+          blue: '#1B3A4B',
+          gold: '#E8AA4C',
+          mist: '#EEF5F2',
+          slate: '#1F2937',
         },
       },
       fontFamily: {
@@ -36,5 +38,16 @@ export default {
       },
     },
   },
-  plugins: [],
+
+  // ✅ Add this plugin
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.section-spacing': {
+          paddingTop: '6rem',
+          paddingBottom: '6rem',
+        },
+      });
+    }),
+  ],
 };

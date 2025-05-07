@@ -8,11 +8,17 @@ import {
 } from "@utils/validation";
 
 export const useBookingForm = () => {
-  const { bookingData, updateBooking } = useBookingContext(); // ✅ Correct usage
+  const { bookingData, updateBooking } = useBookingContext();
 
-  const validateStep = (step: number) => {
+  const validateStep = async (step: number) => {
     try {
-      if (step === 0) serviceSelectionSchema.parse(bookingData);
+      if (step === 0) {
+        const serviceModule = await import("@booking/components/steps/ServiceSelection");
+        if (typeof serviceModule.validate === "function") {
+          const valid = serviceModule.validate(bookingData);
+          return valid;
+        }
+      }
       if (step === 1) calendarSchema.parse(bookingData);
       if (step === 2) customerInfoSchema.parse(bookingData);
       return true;
@@ -23,7 +29,7 @@ export const useBookingForm = () => {
   };
 
   const updateField = (field: string, value: any) => {
-    updateBooking({ [field]: value }); // ✅ Call updateBooking, not setBookingData
+    updateBooking({ [field]: value });
   };
 
   return {
@@ -32,4 +38,3 @@ export const useBookingForm = () => {
     updateField,
   };
 };
-

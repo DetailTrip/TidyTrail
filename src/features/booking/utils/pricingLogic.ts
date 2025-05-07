@@ -7,18 +7,19 @@ export interface PricingInput {
   frequency: Frequency;
   dogCount: number;
   wasteLevel?: WasteLevel;
-  addOns?: string[]; // e.g. ["enzymeCleaner"]
+  addOns?: string[];
   referralCode?: string;
+  prepaySelected?: boolean;
 }
 
 export interface PriceBreakdown {
   basePricePerVisit: number;
   dogSurcharge: number;
   wasteSurcharge: number;
-  addOnTotal: number;
-  referralDiscount: number;
   finalPricePerVisit: number;
   estimatedMonthlyTotal?: number;
+  prepayDiscountAmount?: number;
+  oneTimeAddOnsTotal?: number;
 }
 
 export const calculatePricing = ({
@@ -26,7 +27,7 @@ export const calculatePricing = ({
   dogCount,
   wasteLevel,
   addOns = [],
-  referralCode,
+  prepaySelected,
 }: PricingInput): PriceBreakdown => {
   let basePricePerVisit = 0;
   let visitsPerMonth = 0;
@@ -46,7 +47,7 @@ export const calculatePricing = ({
       break;
     case "onetime":
       basePricePerVisit = 90;
-      visitsPerMonth = 1; // just for consistent math
+      visitsPerMonth = 1;
       break;
   }
 
@@ -63,22 +64,30 @@ export const calculatePricing = ({
     else if (wasteLevel === "heavy") wasteSurcharge = 60;
   }
 
-  const addOnTotal = addOns.includes("enzymeCleaner") ? 18 : 0;
-  const referralDiscount = referralCode ? 10 : 0;
+  const oneTimeAddOnsTotal = addOns.includes("enzymeCleaner") ? 18 : 0;
 
-  const finalPricePerVisit =
-    basePricePerVisit + dogSurcharge + wasteSurcharge + addOnTotal - referralDiscount;
+  const finalPricePerVisit = basePricePerVisit + dogSurcharge + wasteSurcharge;
 
-  const estimatedMonthlyTotal =
+  let estimatedMonthlyTotal =
     frequency !== "onetime" ? finalPricePerVisit * visitsPerMonth : undefined;
+
+  let prepayDiscountAmount = 0;
+  if (
+    prepaySelected &&
+    (frequency === "weekly" || frequency === "biweekly" || frequency === "twice") &&
+    estimatedMonthlyTotal
+  ) {
+    prepayDiscountAmount = estimatedMonthlyTotal * 0.1;
+    estimatedMonthlyTotal = estimatedMonthlyTotal - prepayDiscountAmount;
+  }
 
   return {
     basePricePerVisit,
     dogSurcharge,
     wasteSurcharge,
-    addOnTotal,
-    referralDiscount,
     finalPricePerVisit,
     estimatedMonthlyTotal,
+    prepayDiscountAmount,
+    oneTimeAddOnsTotal,
   };
 };

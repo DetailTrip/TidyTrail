@@ -1,0 +1,14 @@
+"frequency","dogCount","areas","addOns","firstServiceDate","name","phone","email","address","total","receivedAt","wasteLevel","referralCode"
+"biweekly",1,"[""Side Yard""]","[""enzymeCleaner""]","2025-05-05","Pat Forest","7054065552","patriceforest@outlook.com","333 7th",63,"2025-04-30T22:39:33.645Z",,
+"weekly",2,"[""Back Yard""]","[""enzymeCleaner""]","2025-06-03","jess","7052258888","jess@hotmail.com","123 tetas",42,"2025-05-01T01:21:58.750Z",,
+"onetime",2,"[""Back Yard"",""Front Yard""]","[""enzymeCleaner""]","2025-06-03","jess","7052258888","jess@hotmail.com","123 tetas",138,"2025-05-01T01:31:15.201Z","moderate",
+"onetime",2,"[""Back Yard"",""Front Yard""]","[""enzymeCleaner""]","2025-06-03","jess","7052258888","jess@hotmail.com","123 tetas",138,"2025-05-01T01:31:18.305Z","moderate",
+"twice",1,"[""Front Yard"",""Patio/Driveway""]","[""enzymeCleaner""]","2025-06-03","jack","7052258888","kakas@hotmail.com","1343 faee",38,"2025-05-01T01:32:54.116Z",,
+"onetime",2,"[""Back Yard""]","[]","2025-05-12","Pat Forest","7054065552","patriceforest@outlook.com","333 7th",120,"2025-05-03T20:53:28.995Z","moderate",
+"biweekly",3,"[""Back Yard""]","[""enzymeCleaner""]","2025-05-12","Pat Forest","7054065552","patriceforest@outlook.com","333 7th",68,"2025-05-03T20:55:54.561Z","moderate",
+"onetime",3,"[""Back Yard""]","[""enzymeCleaner""]","2025-05-12","Pat Forest","7054065552","patriceforest@outlook.com","333 8989",138,"2025-05-03T21:06:29.494Z","moderate",
+"biweekly",3,"[""Back Yard""]","[""enzymeCleaner""]","2025-05-12","Pat Forest","7054065552","patriceforest@outlook.com","333 8989",68,"2025-05-03T21:08:29.799Z","moderate",
+"onetime",3,"[""Back Yard""]","[""enzymeCleaner""]","2025-05-12","Pat Forest","7054065552","patriceforest@outlook.com","333 6666",168,"2025-05-03T21:40:23.852Z","heavy",
+"onetime",2,"[""Front Yard""]","[]","2025-05-07","Pat Forest","7054065552","patriceforest@outlook.com","333 7th",120,"2025-05-03T23:27:41.217Z","moderate",
+"onetime",2,"[""Front Yard""]","[]","2025-05-07","Pat Forest","7054065552","patriceforest@outlook.com","333 7th",110,"2025-05-03T23:29:55.305Z","moderate","TIDY10"
+"weekly",2,"[""Front Yard""]","[]","2025-05-07","Pat Forest","7054065552","patriceforest@outlook.com","333 7th",86,"2025-05-04T00:45:35.025Z","moderate","TIDY10"

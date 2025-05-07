@@ -1,3 +1,5 @@
+// src/features/booking/components/BookingWizard.tsx
+
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useBookingForm } from "@booking/hooks/useBookingForm";
@@ -19,17 +21,28 @@ const steps = [
 const BookingWizard: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const { validateStep } = useBookingForm();
-  const { bookingData, updateBooking } = useBookingContext();
+  const { updateBooking, bookingData } = useBookingContext();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const paramFrequency = searchParams.get("frequency")?.toLowerCase();
+    const paramReferral = searchParams.get("ref")?.toUpperCase();
     const allowed: Frequency[] = ["weekly", "biweekly", "twice", "onetime"];
 
+    const updates: Partial<typeof bookingData> = {};
+
     if (paramFrequency && allowed.includes(paramFrequency as Frequency) && !bookingData.frequency) {
-      updateBooking({ frequency: paramFrequency as Frequency });
+      updates.frequency = paramFrequency as Frequency;
     }
-  }, [searchParams, bookingData.frequency, updateBooking]);
+
+    if (paramReferral && !bookingData.referralCode) {
+      updates.referralCode = paramReferral;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      updateBooking(updates);
+    }
+  }, [searchParams, bookingData.frequency, bookingData.referralCode, updateBooking]);
 
   const goNext = async () => {
     const isValid = await validateStep(currentStep);
@@ -54,7 +67,7 @@ const BookingWizard: React.FC = () => {
         {steps[currentStep].title}
       </h2>
       <div className="mb-12">
-        <StepComponent />
+        <StepComponent goBack={goBack} goToStep={setCurrentStep} />
       </div>
       <div className="flex justify-between items-center">
         {currentStep > 0 ? (
@@ -64,21 +77,15 @@ const BookingWizard: React.FC = () => {
           >
             Back
           </button>
-        ) : <div />}
+        ) : (
+          <div />
+        )}
         {!isLastStep && (
           <button
             onClick={goNext}
             className="bg-tidy-green hover:bg-green-800 text-white px-6 py-2 rounded transition"
           >
             Next
-          </button>
-        )}
-        {isLastStep && (
-          <button
-            onClick={goNext}
-            className="bg-tidy-green hover:bg-green-800 text-white px-6 py-2 rounded transition"
-          >
-            🎉 Confirm My Booking
           </button>
         )}
       </div>

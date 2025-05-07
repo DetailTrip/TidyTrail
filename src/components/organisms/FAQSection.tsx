@@ -30,9 +30,9 @@ const FAQSection: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="bg-white py-16 px-6 md:px-10 lg:px-20">
+    <section className="bg-white py-24 px-6 md:px-10 lg:px-20">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-tidy-green mb-10">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-tidy-green mb-12">
           Frequently Asked Questions
         </h2>
 
@@ -42,13 +42,13 @@ const FAQSection: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="border rounded-lg shadow-sm overflow-hidden"
+                className="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-gray-50"
               >
                 <button
-                  className="w-full flex items-center justify-between text-left p-4 text-lg font-medium text-tidy-green hover:bg-tidy-mist focus:outline-none"
+                  className="w-full flex items-center justify-between text-left px-6 py-4 text-base md:text-lg font-semibold text-tidy-green hover:bg-tidy-mist focus:outline-none"
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
                 >
-                  {faq.question}
+                  <span>{faq.question}</span>
                   <ChevronDown
                     className={`w-5 h-5 transform transition-transform duration-300 ${
                       isOpen ? "rotate-180" : "rotate-0"
@@ -56,7 +56,7 @@ const FAQSection: React.FC = () => {
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-4 pb-4 text-gray-700 text-sm">
+                  <div className="px-6 pb-6 text-gray-700 text-sm md:text-base leading-relaxed">
                     {faq.answer}
                   </div>
                 )}

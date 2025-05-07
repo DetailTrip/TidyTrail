@@ -14,7 +14,9 @@
       "@components/*":  ["src/components/*"],
       "@features/*":    ["src/features/*"],
       "@booking/*":     ["src/features/booking/*"],
-      "@utils/*":       ["src/utils/*"]
+      "@utils/*":       ["src/utils/*"],
+      "@admin/*":       ["src/features/admin/*"],
+      "@hooks/*":       ["src/hooks/*"]        /* ← NEW */
     },
 
     /* Strictness & Quality */
