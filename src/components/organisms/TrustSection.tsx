@@ -25,7 +25,7 @@ const trustPoints = [
 
 const TrustSection: React.FC = () => {
   return (
-    <section className="bg-tidy-mist px-6 md:px-10 lg:px-20 section-spacing">
+    <section className="bg-emerald-50 px-6 md:px-10 lg:px-20 section-spacing">
       <div className="max-w-6xl mx-auto text-center space-y-12">
         <h2 className="text-3xl md:text-4xl font-bold text-tidy-green">
           Community-Focused, Customer-First
@@ -49,3 +49,4 @@ const TrustSection: React.FC = () => {
 };
 
 export default TrustSection;
+

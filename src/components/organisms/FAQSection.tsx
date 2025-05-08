@@ -30,7 +30,7 @@ const FAQSection: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="bg-white py-24 px-6 md:px-10 lg:px-20">
+    <section className="bg-neutral-50 py-24 px-6 md:px-10 lg:px-20">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-tidy-green mb-12">
           Frequently Asked Questions
@@ -42,10 +42,10 @@ const FAQSection: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-gray-50"
+                className="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white"
               >
                 <button
-                  className="w-full flex items-center justify-between text-left px-6 py-4 text-base md:text-lg font-semibold text-tidy-green hover:bg-tidy-mist focus:outline-none"
+                  className="w-full flex items-center justify-between text-left px-6 py-4 text-base md:text-lg font-semibold text-tidy-green hover:bg-gray-100 focus:outline-none"
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
                 >
                   <span>{faq.question}</span>
@@ -70,3 +70,4 @@ const FAQSection: React.FC = () => {
 };
 
 export default FAQSection;
+

@@ -1,7 +1,7 @@
 // src/components/organisms/WhyChooseUs.tsx
 import React from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, MapPin, PawPrint, CalendarClock, HandHeart } from "lucide-react";
+import { CheckCircle, MapPin, PawPrint, CalendarClock, HandHeart, Sparkles } from "lucide-react";
 
 const reasons = [
   {
@@ -29,12 +29,20 @@ const reasons = [
     title: "$1 Per Visit Goes to SPCA",
     description: "Giving back with every cleanup. Local service that pays it forward.",
   },
+  {
+    icon: <Sparkles className="w-7 h-7 text-tidy-green" />,
+    title: "Sanitized Equipment",
+    description: "We take hygiene seriously — all tools are sanitized with organic disinfectant, trusted by kennels and clinics alike."
+  },
 ];
 
 const WhyChooseUs: React.FC = () => {
   return (
-    <section className="bg-tidy-mist px-6 section-spacing">
+    <section className="bg-amber-50 px-6 section-spacing">
       <div className="max-w-6xl mx-auto space-y-14">
+        <p className="text-base text-gray-700 max-w-xl mx-auto text-center">
+          Here’s what makes TidyTrails Timmins’ top choice for poop-free yards.
+        </p>
         <h2 className="text-4xl md:text-5xl font-bold text-tidy-green text-center relative">
           The TidyTrails Difference
           <span className="block w-12 h-1 bg-tidy-gold mx-auto mt-3 rounded-full" />
@@ -44,15 +52,15 @@ const WhyChooseUs: React.FC = () => {
           {reasons.map((reason, idx) => (
             <motion.div
               key={idx}
-              className={`flex gap-4 items-start bg-gradient-to-br from-white to-tidy-mist/40 p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
-                idx % 2 === 1 ? "sm:translate-y-6" : ""
-              } ${idx === 4 ? "sm:col-span-2 sm:mx-auto sm:max-w-lg" : ""}`}
+              className={`flex gap-4 items-start ${idx % 2 === 0 ? 'bg-white' : 'bg-lime-50'}  p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
+                ""
+              } `}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: idx * 0.1 }}
               viewport={{ once: true, amount: 0.3 }}
             >
-              <div>{reason.icon}</div>
+              <div className="pt-1 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">{reason.icon}</div>
               <div>
                 <h3 className="text-lg font-semibold text-tidy-blue">{reason.title}</h3>
                 <p className="text-sm text-gray-600 mt-1">{reason.description}</p>
