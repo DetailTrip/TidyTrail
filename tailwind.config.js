@@ -16,6 +16,16 @@ export default {
           mist: '#EEF5F2',
           slate: '#1F2937',
         },
+        // Design token aliases
+        primary: '#3F7D20',       // brand green
+        secondary: '#1B3A4B',     // brand navy
+        accent: '#E8AA4C',        // gold
+        background: '#F9FAFB',    // section bg
+        muted: '#6B7280',         // subtle text/icons
+        sectionAlt: '#F3F4F6',    // soft alt rows
+        border: '#E5E7EB',        // card borders
+        card: '#FFFFFF',          // white card bg
+        highlight: '#FFF8EC',     // soft gold highlight
       },
       fontFamily: {
         display: ['"Lato"', 'sans-serif'],
@@ -38,8 +48,6 @@ export default {
       },
     },
   },
-
-  // ✅ Add this plugin
   plugins: [
     plugin(function ({ addUtilities }) {
       addUtilities({

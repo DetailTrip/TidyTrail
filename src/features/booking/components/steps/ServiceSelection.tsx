@@ -8,10 +8,10 @@ import { serviceSelectionSchema } from "@utils/validation";
 import { Check } from "lucide-react";
 
 const frequencies = [
-  { label: "Weekly", value: "weekly" },
-  { label: "Bi-Weekly", value: "biweekly" },
-  { label: "Twice a Week", value: "twice" },
-  { label: "One-Time (Spring Cleanup)", value: "onetime" },
+  { label: "Weekly", value: "weekly", icon: "🗓️" },
+  { label: "Bi-Weekly", value: "biweekly", icon: "📆" },
+  { label: "Twice a Week", value: "twice", icon: "🔁" },
+  { label: "One-Time (Spring Cleanup)", value: "onetime", icon: "🌷" },
 ];
 
 const wasteLevels = [
@@ -90,21 +90,19 @@ const ServiceSelection: React.FC = () => {
         </div>
       )}
 
-      <div>
-        <h2 className="text-2xl font-bold text-center">How often should we scoop?</h2>
+      <fieldset>
+        <legend className="text-2xl font-bold text-center">How often should we scoop?</legend>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           {frequencies.map((freq) => (
             <button
               type="button"
               key={freq.value}
-              className={`border rounded p-4 flex justify-between items-center transition shadow-sm text-left font-semibold ${
-                bookingData.frequency === freq.value
-                  ? "bg-green-50 border-green-500 ring-2 ring-green-300"
-                  : "hover:bg-gray-100"
-              }`}
+              className={`border rounded p-4 flex justify-between items-center transition shadow-sm text-left font-semibold aria-pressed:$
+                {bookingData.frequency === freq.value}`}
+              aria-pressed={bookingData.frequency === freq.value}
               onClick={() => updateBooking({ frequency: freq.value as Frequency })}
             >
-              <span>{freq.label}</span>
+              <span>{freq.icon} {freq.label}</span>
               {bookingData.frequency === freq.value && <Check className="w-4 h-4 text-green-600" />}
             </button>
           ))}
@@ -118,21 +116,22 @@ const ServiceSelection: React.FC = () => {
             We’ll ask how much waste is present next.
           </p>
         )}
-      </div>
+      </fieldset>
 
       {bookingData.frequency === "onetime" && (
-        <div>
-          <h3 className="text-lg font-semibold mb-2">What’s the poop situation?</h3>
+        <fieldset>
+          <legend className="text-lg font-semibold mb-2">What’s the poop situation?</legend>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {wasteLevels.map((level) => (
               <button
                 type="button"
                 key={level.value}
-                className={`p-4 rounded-lg shadow-sm border transition text-left ${
+                className={`p-4 rounded-lg shadow-sm border transition text-left bg-mist ${
                   bookingData.wasteLevel === level.value
-                    ? "ring-2 ring-green-500 border-green-500 bg-green-50"
+                    ? "ring-2 ring-green-500 border-green-500"
                     : "hover:bg-gray-100"
                 }`}
+                aria-pressed={bookingData.wasteLevel === level.value}
                 onClick={() => updateBooking({ wasteLevel: level.value as WasteLevel })}
               >
                 <div className="text-lg font-semibold">
@@ -143,15 +142,15 @@ const ServiceSelection: React.FC = () => {
             ))}
           </div>
           {errors.wasteLevel && <p className="text-sm text-red-600 mt-2">{errors.wasteLevel}</p>}
-        </div>
+        </fieldset>
       )}
 
-      <div>
-        <h3 className="text-lg font-semibold mb-2">How many dogs?</h3>
+      <fieldset className="bg-highlight border border-accent px-4 py-4 rounded-xl">
+        <legend className="text-lg font-semibold mb-2">🐕‍🦺 How many dogs?</legend>
         <div className="flex justify-center items-center gap-4">
           <button
             type="button"
-            className="bg-gray-200 hover:bg-green-200 w-8 h-8 rounded-full text-lg"
+            className="bg-gray-200 hover:ring-2 hover:ring-green-400 w-10 h-10 rounded-full text-lg"
             onClick={() => updateBooking({ dogCount: Math.max((bookingData.dogCount || 1) - 1, 1) })}
           >
             -
@@ -159,7 +158,7 @@ const ServiceSelection: React.FC = () => {
           <span className="text-xl font-semibold">{bookingData.dogCount || 1}</span>
           <button
             type="button"
-            className="bg-gray-200 hover:bg-green-200 w-8 h-8 rounded-full text-lg"
+            className="bg-gray-200 hover:ring-2 hover:ring-green-400 w-10 h-10 rounded-full text-lg"
             onClick={() => updateBooking({ dogCount: Math.min((bookingData.dogCount || 1) + 1, 6) })}
           >
             +
@@ -167,13 +166,13 @@ const ServiceSelection: React.FC = () => {
         </div>
         {errors.dogCount && <p className="text-sm text-red-600 text-center mt-2">{errors.dogCount}</p>}
         <p className="text-sm text-gray-500 text-center mt-1">Used to calculate your price.</p>
-        <div className="bg-yellow-50 border border-yellow-300 text-yellow-800 text-sm rounded px-3 py-2 mt-2 text-center">
+        <p className="text-yellow-800 bg-yellow-100 border border-yellow-300 text-sm rounded px-3 py-2 mt-2 text-center">
           ⚠️ Heads up! A small fee is included automatically if you have more than 2 dogs.
-        </div>
-      </div>
+        </p>
+      </fieldset>
 
-      <div>
-        <h3 className="text-lg font-semibold mb-2">What parts of the yard?</h3>
+      <fieldset>
+        <legend className="text-lg font-semibold mb-2">🏡 What parts of the yard?</legend>
         <p className="text-sm text-gray-500 text-center mb-2">Select all that apply</p>
         <div className="flex flex-wrap gap-3 justify-center">
           {areas.map((area) => (
@@ -182,7 +181,7 @@ const ServiceSelection: React.FC = () => {
               key={area}
               className={`px-4 py-2 border rounded-full transition ${
                 bookingData.areas?.includes(area)
-                  ? "bg-green-100 border-green-500"
+                  ? "bg-mist border-green-500"
                   : "hover:bg-gray-100"
               }`}
               onClick={() => toggleArea(area)}
@@ -195,12 +194,17 @@ const ServiceSelection: React.FC = () => {
           ))}
         </div>
         {errors.areas && <p className="text-sm text-red-600 text-center mt-2">{errors.areas}</p>}
-      </div>
+      </fieldset>
 
-      <hr className="mt-8" />
-
-      <div className="pt-4">
-        <label className="flex items-center gap-2">
+      <fieldset className="pt-4">
+        <legend className="text-lg font-semibold mb-2">🧼 Deep Clean Add-On</legend>
+        <div
+          className={`p-4 rounded-lg shadow-sm border bg-mist flex items-start gap-4 ${
+            bookingData.addOns?.includes("enzymeCleaner")
+              ? "ring-2 ring-green-500 border-green-500"
+              : "hover:bg-gray-100"
+          }`}
+        >
           <input
             type="checkbox"
             checked={bookingData.addOns?.includes("enzymeCleaner") || false}
@@ -208,15 +212,18 @@ const ServiceSelection: React.FC = () => {
               const updated = e.target.checked ? ["enzymeCleaner"] : [];
               updateBooking({ addOns: updated });
             }}
-            className="w-5 h-5"
+            className="mt-1 w-5 h-5 shrink-0"
+            aria-label="Add enzyme cleaner for $18"
           />
-          <span className="font-medium">Deep Clean Add-On (+$18)</span>
-        </label>
-        <p className="text-sm text-gray-500 ml-6">
-          We use EZ-CLEAN™ — a Canadian-made, pet-safe formula that breaks down bacteria,
-          odors, and organic stains using natural enzymes.
-        </p>
-      </div>
+          <div>
+            <span className="font-medium">Add Enzyme Cleaner (+$18)</span>
+            <p className="text-sm text-gray-600 mt-1">
+              EZ-CLEAN™ is a Canadian-made, pet-safe formula that breaks down bacteria,
+              odors, and organic stains using natural enzymes.
+            </p>
+          </div>
+        </div>
+      </fieldset>
     </div>
   );
 };
@@ -229,7 +236,6 @@ export const validate = (data: any) => {
   if (!data.dogCount) errs.dogCount = "Please select how many dogs you have.";
   if (!data.areas || data.areas.length === 0)
     errs.areas = "Please select at least one area to clean.";
-
   if (lastSetErrors) lastSetErrors(errs);
   return Object.keys(errs).length === 0;
 };

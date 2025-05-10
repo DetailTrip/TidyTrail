@@ -1,47 +1,63 @@
 // src/components/organisms/PricingPreview.tsx
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Repeat, CalendarClock, Sparkles, Copy, MessageCircle } from "lucide-react";
 
 const PricingPreview: React.FC = () => {
+  const [copied, setCopied] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const referralCode = "TIDY10";
+  const referralLink = `${window.location.origin}/booking?ref=${referralCode}`;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(referralLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      alert("Copy failed. Please try manually.");
+    }
+  };
+
   return (
-    <> 
-      <div className="h-[3px] w-16 bg-tidy-gold mx-auto my-10 rounded-full"></div>
-      <section id="pricing" className="bg-stone-50 px-6 text-center section-spacing">
-        <div className="max-w-6xl mx-auto space-y-14">
-          <p className="text-base text-gray-600 text-center max-w-xl mx-auto mb-2">
-            Pick the plan that fits your routine — weekly, bi-weekly, or one-time.
-          </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-tidy-green text-center relative">
-            Choose Your Plan
-            <span className="block w-12 h-1 bg-tidy-gold mx-auto mt-3 rounded-full" />
-          </h2>
+    <section id="pricing" className="bg-sectionAlt px-6 text-center section-spacing">
+      <div className="max-w-6xl mx-auto space-y-14">
+        <h2 className="text-4xl md:text-5xl font-bold text-primary text-center relative">
+          Choose Your Plan
+          <span className="block w-12 h-1 bg-accent mx-auto mt-3 rounded-full" />
+        </h2>
+        <p className="text-base text-muted text-center max-w-xl mx-auto">
+          Weekly. Bi-weekly. One-time. You pick the pace.
+        </p>
 
-          {/* Subheading with upsell context */}
-          <p className="text-base sm:text-lg text-gray-700 max-w-2xl mx-auto mt-2">
-            Save 10% when you prepay — or refer a friend and both save $10.
-          </p>
+        {/* Subheading with upsell context */}
+        <p className="text-base sm:text-lg text-muted max-w-2xl mx-auto mt-2">
+          Save 10% when you prepay — or refer a friend and both save $10.
+        </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-14">
+        <div className="bg-white rounded-2xl shadow-inner ring-1 ring-border/20 mt-14 p-6 md:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-border/30">
             {/* Weekly Service */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              className="relative bg-gradient-to-br from-white to-tidy-mist/40 rounded-xl shadow-md p-8 flex flex-col items-center space-y-6 border-2 border-tidy-green hover:scale-[1.02] hover:shadow-lg transition-transform"
+              className="relative bg-white rounded-xl p-8 flex flex-col items-center space-y-6 md:pr-6 hover:scale-[1.02] hover:shadow-lg transition-transform"
             >
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-tidy-gold text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full shadow">
                 Most Popular
               </span>
-              <h3 className="text-xl font-semibold text-tidy-blue">Weekly Service</h3>
-              <p className="text-3xl font-bold text-tidy-green bg-tidy-mist px-4 py-1 rounded-full">
+              <div className="text-accent"> <Repeat className="w-6 h-6" /> </div>
+              <h3 className="text-xl font-semibold text-secondary">Weekly Service</h3>
+              <p className="text-3xl font-bold text-primary bg-muted/10 px-4 py-1 rounded-full">
                 $24<span className="text-lg font-normal">/visit</span>
               </p>
-              <p className="text-gray-600 text-sm text-balance">Best for fresh yards year-round.</p>
+              <p className="text-muted text-sm text-balance">Best for fresh yards year-round.</p>
               <Link
                 to="/booking?frequency=weekly"
-                className="mt-4 bg-tidy-gold hover:bg-yellow-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+                className="mt-4 bg-accent hover:bg-yellow-500 text-white text-base font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:translate-y-[1px]"
               >
                 💸 Start Weekly & Save
               </Link>
@@ -53,16 +69,17 @@ const PricingPreview: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.1 }}
               viewport={{ once: true, amount: 0.3 }}
-              className="bg-gradient-to-br from-white to-tidy-mist/40 rounded-xl shadow-md p-8 flex flex-col items-center space-y-6 hover:scale-[1.02] hover:shadow-lg transition-transform"
+              className="bg-white rounded-xl p-8 flex flex-col items-center space-y-6 md:px-6 hover:scale-[1.02] hover:shadow-lg transition-transform"
             >
-              <h3 className="text-xl font-semibold text-tidy-blue">Bi-Weekly Service</h3>
-              <p className="text-3xl font-bold text-tidy-green bg-tidy-mist px-4 py-1 rounded-full">
+              <div className="text-accent"> <CalendarClock className="w-6 h-6" /> </div>
+              <h3 className="text-xl font-semibold text-secondary">Bi-Weekly Service</h3>
+              <p className="text-3xl font-bold text-primary bg-muted/10 px-4 py-1 rounded-full">
                 $45<span className="text-lg font-normal">/visit</span>
               </p>
-              <p className="text-gray-600 text-sm text-balance">Every other week — great for light-traffic yards.</p>
+              <p className="text-muted text-sm text-balance">Every other week — great for light-traffic yards.</p>
               <Link
                 to="/booking?frequency=biweekly"
-                className="mt-4 bg-tidy-green hover:bg-green-800 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+                className="mt-4 bg-primary hover:bg-green-800 text-white text-base font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:translate-y-[1px]"
               >
                 Choose Bi-Weekly
               </Link>
@@ -74,48 +91,91 @@ const PricingPreview: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
               viewport={{ once: true, amount: 0.3 }}
-              className="bg-gradient-to-br from-white to-tidy-mist/40 rounded-xl shadow-md p-8 flex flex-col items-center space-y-6 hover:scale-[1.02] hover:shadow-lg transition-transform"
+              className="bg-muted/5 rounded-xl p-8 flex flex-col items-center space-y-6 md:pl-6 hover:scale-[1.02] hover:shadow-lg transition-transform"
             >
-              <h3 className="text-xl font-semibold text-tidy-blue">One-Time Cleanup</h3>
-              <p className="text-3xl font-bold text-tidy-green bg-tidy-mist px-4 py-1 rounded-full">From $90</p>
-              <p className="text-gray-600 text-sm text-balance">Perfect for spring cleanups or move-outs.</p>
+              <span className="absolute top-4 right-4 bg-muted text-white text-xs px-2 py-0.5 rounded-full shadow">One-Time</span>
+              <div className="text-accent"> <Sparkles className="w-6 h-6" /> </div>
+              <h3 className="text-xl font-semibold text-secondary">One-Time Cleanup</h3>
+              <p className="text-3xl font-bold text-primary bg-muted/10 px-4 py-1 rounded-full">From $90</p>
+              <p className="text-muted text-sm text-balance">Perfect for spring cleanups or move-outs.</p>
               <Link
                 to="/booking?frequency=onetime"
-                className="mt-4 bg-tidy-green hover:bg-green-800 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+                className="mt-4 bg-primary hover:bg-green-800 text-white text-base font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:translate-y-[1px]"
               >
                 Book One-Time Cleanup
               </Link>
             </motion.div>
           </div>
+        </div>
 
-          {/* Deep Clean Add-On */}
-          <p className="text-sm text-gray-700 mt-6 max-w-2xl mx-auto">
-            🧼 Need extra freshness? Add a Deep Clean for <strong>$18</strong> — we use <strong>EZ-CLEAN™</strong>, a Canadian-made, pet-safe enzyme formula that breaks down bacteria, odors, and organic stains.
-          </p>
+        {/* Deep Clean Add-On */}
+        <div className="mt-10 max-w-2xl mx-auto bg-muted/5 border border-border rounded-lg p-4 text-sm text-muted">
+          🧼 Need extra freshness? Add a Deep Clean for <strong>$18</strong> — we use <strong>EZ-CLEAN™</strong>, a Canadian-made, pet-safe enzyme formula that breaks down bacteria, odors, and organic stains.
+        </div>
 
-          {/* Refer-a-Friend Note */}
-          <p className="text-sm text-gray-700 mt-4">
-            💚 Refer a friend and you both save $10 —{' '}
-            <Link to="/#referral" className="text-tidy-green underline font-medium">
-              share your link.
-            </Link>
-          </p>
+        {/* Refer-a-Friend Note with modal trigger */}
+        <div className="max-w-2xl mx-auto mt-4 bg-muted/5 border border-border rounded-lg p-4 text-sm text-muted">
+          💚 Refer a friend and you both save $10 —{' '}
+          <button
+            onClick={() => setShowModal(true)}
+            className="text-primary underline font-medium hover:text-secondary transition"
+          >
+            learn how it works
+          </button>
+        </div>
 
-          {/* Pricing Disclaimer */}
-          <p className="text-xs text-gray-500 max-w-2xl mx-auto mt-10">
-            Base rates shown. Final pricing is personalized based on your yard, pets, and preferences.
-          </p>
+        {/* Modal */}
+        {showModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+            <div className="bg-white max-w-md w-full rounded-xl p-6 shadow-xl space-y-4 text-left">
+              <h3 className="text-xl font-bold text-primary">💚 Give $10, Get $10</h3>
+              <p className="text-sm text-muted">
+                Share your link. When your friend books their first cleanup, you both get $10 off.
+              </p>
+              <div className="bg-muted/10 border border-muted px-4 py-2 rounded-md text-sm font-mono select-all">
+                {referralLink}
+              </div>
+              <div className="flex gap-2 pt-2">
+                <button
+                  onClick={handleCopy}
+                  className="flex items-center gap-1 bg-primary hover:bg-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow"
+                >
+                  <Copy className="w-4 h-4" /> {copied ? "Copied!" : "Copy Link"}
+                </button>
+                <a
+                  href={`sms:&body=Check out TidyTrails and get $10 off your first cleanup! ${referralLink}`}
+                  className="flex items-center gap-1 bg-accent hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow"
+                >
+                  <MessageCircle className="w-4 h-4" /> Send via Text
+                </a>
+              </div>
+              <button
+                onClick={() => setShowModal(false)}
+                className="block text-sm text-muted hover:text-primary mt-2 mx-auto"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
 
-          {/* Extra CTA for unsure users */}
-          <p className="text-sm text-gray-600 mt-6">
+        {/* Pricing Disclaimer */}
+        <p className="text-xs text-muted max-w-2xl mx-auto mt-10">
+          Base rates shown. Final pricing is personalized based on your yard, pets, and preferences.
+        </p>
+
+        {/* Extra CTA */}
+        <div className="pt-12">
+          <div className="h-[1px] w-16 bg-accent/20 mx-auto mb-6" />
+          <p className="text-sm text-muted">
             Not sure what to pick?{' '}
-            <Link to="/booking" className="text-tidy-blue underline font-medium">
+            <Link to="/booking" className="text-secondary underline font-medium">
               See all service options in the booking form.
             </Link>
           </p>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 

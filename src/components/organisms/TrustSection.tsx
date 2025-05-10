@@ -4,19 +4,19 @@ import { PawPrint, HandHeart, Clock } from "lucide-react";
 
 const trustPoints = [
   {
-    icon: <HandHeart className="w-8 h-8 text-tidy-green mx-auto" />,
+    icon: <HandHeart className="w-8 h-8 text-primary mx-auto" />,
     title: "We Give Back",
     description:
       "$1 from every cleanup goes directly to the Timmins SPCA. Community impact starts local.",
   },
   {
-    icon: <PawPrint className="w-8 h-8 text-tidy-green mx-auto" />,
+    icon: <PawPrint className="w-8 h-8 text-primary mx-auto" />,
     title: "Locally Owned",
     description:
       "TidyTrails is based right here in Timmins—built for and by pet lovers in our city.",
   },
   {
-    icon: <Clock className="w-8 h-8 text-tidy-green mx-auto" />,
+    icon: <Clock className="w-8 h-8 text-primary mx-auto" />,
     title: "Fast Booking",
     description:
       "No phone calls or forms that drag on—just book online in under 60 seconds.",
@@ -25,9 +25,9 @@ const trustPoints = [
 
 const TrustSection: React.FC = () => {
   return (
-    <section className="bg-emerald-50 px-6 md:px-10 lg:px-20 section-spacing">
+    <section className="bg-white px-6 md:px-10 lg:px-20 section-spacing">
       <div className="max-w-6xl mx-auto text-center space-y-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-tidy-green">
+        <h2 className="text-3xl md:text-4xl font-bold text-primary">
           Community-Focused, Customer-First
         </h2>
 
@@ -35,11 +35,11 @@ const TrustSection: React.FC = () => {
           {trustPoints.map((point, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-xl shadow-md p-6 space-y-4 flex flex-col items-center"
+              className="bg-background rounded-xl shadow-sm p-6 space-y-4 flex flex-col items-center"
             >
               {point.icon}
-              <h3 className="text-lg font-semibold text-tidy-blue">{point.title}</h3>
-              <p className="text-sm text-gray-600 text-center max-w-xs">{point.description}</p>
+              <h3 className="text-lg font-semibold text-secondary">{point.title}</h3>
+              <p className="text-sm text-muted text-center max-w-xs">{point.description}</p>
             </div>
           ))}
         </div>
@@ -49,4 +49,3 @@ const TrustSection: React.FC = () => {
 };
 
 export default TrustSection;
-

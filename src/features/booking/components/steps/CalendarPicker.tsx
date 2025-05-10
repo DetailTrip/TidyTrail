@@ -5,7 +5,6 @@ import { useBookingContext } from "@booking/context/BookingContext";
 import { useAvailability, DayAvailability } from "@booking/hooks/useAvailability";
 
 // Parse a YYYY-MM-DD string into a local Date at midnight
-type Nullable<T> = T | null;
 function parseLocalDate(dateStr: string): Date {
   const [year, month, day] = dateStr.split("-");
   return new Date(Number(year), Number(month) - 1, Number(day));
@@ -25,24 +24,24 @@ const CalendarPicker: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { data, isLoading, isError } = useAvailability(selectedDate);
-  const availability: Nullable<DayAvailability> = data ?? null;
+  const availability: DayAvailability | null = data ?? null;
 
   const handleDateChange = (v: string) => {
     setSelectedDate(v);
     updateBooking({ firstServiceDate: v });
-    setErrorMessage(null); // clear error on change
+    setErrorMessage(null);
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 text-center space-y-8">
-      <h2 className="text-2xl font-bold text-tidy-green">Pick Your First Cleanup Date</h2>
-      <p className="text-gray-600 text-sm">
-        Choose a weekend (Saturday or Sunday) that works for your first visit.
+    <div className="max-w-md mx-auto p-6 space-y-6 text-center">
+      <h2 className="text-2xl font-bold text-primary">📅 First Cleanup Date</h2>
+      <p className="text-sm text-gray-600">
+        We scoop on weekends! Choose a <strong>Saturday</strong> or <strong>Sunday</strong> for your first visit.
       </p>
 
-      <div>
-        <label htmlFor="first-cleanup-date" className="block text-sm font-medium text-gray-700">
-          Select a date for your first cleanup:
+      <div className="bg-mist border border-border rounded-lg p-6">
+        <label htmlFor="first-cleanup-date" className="block text-sm font-medium text-gray-700 mb-2">
+          Select a date:
         </label>
         <input
           id="first-cleanup-date"
@@ -50,28 +49,38 @@ const CalendarPicker: React.FC = () => {
           min={today}
           value={selectedDate}
           onChange={(e) => handleDateChange(e.target.value)}
-          className="border p-3 rounded-lg w-full max-w-xs mx-auto text-center"
+          className="border border-border p-3 rounded-md w-full bg-white text-center shadow-sm"
         />
 
-        {isLoading && <p className="text-sm text-gray-500 mt-2">Checking availability...</p>}
-        {isError && <p className="text-sm text-red-600 mt-2">Error loading availability.</p>}
+        {isLoading && (
+          <p className="mt-3 text-sm text-gray-500" aria-live="polite">🌀 Checking availability...</p>
+        )}
+        {isError && (
+          <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded" aria-live="polite">
+            ❌ Error loading availability. Please try again.
+          </p>
+        )}
 
         {selectedDate && !isWeekend(selectedDate) && (
-          <p className="text-sm text-red-600 mt-2">Please choose a Saturday or Sunday.</p>
+          <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded" aria-live="polite">
+            ❌ Please choose a <strong>Saturday</strong> or <strong>Sunday</strong>.
+          </p>
         )}
 
         {availability && !availability.available && (
-          <p className="text-sm text-red-600 mt-2">Sorry, that date is fully booked.</p>
+          <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded" aria-live="polite">
+            ❌ Sorry, that date is fully booked.
+          </p>
         )}
 
         {availability && availability.available && availability.spotsLeft < 30 && (
-          <p className="text-sm text-green-600 mt-2">
-            {availability.spotsLeft} {availability.spotsLeft === 1 ? "spot" : "spots"} left
+          <p className="inline-block mt-3 bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full" aria-live="polite">
+            ✅ {availability.spotsLeft} {availability.spotsLeft === 1 ? "spot" : "spots"} left for that day
           </p>
         )}
 
         {errorMessage && (
-          <p className="text-sm text-red-600 font-medium mt-2">{errorMessage}</p>
+          <p className="text-sm text-red-600 font-medium mt-2" aria-live="polite">{errorMessage}</p>
         )}
       </div>
     </div>

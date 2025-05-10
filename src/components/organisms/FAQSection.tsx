@@ -30,9 +30,9 @@ const FAQSection: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="bg-neutral-50 py-24 px-6 md:px-10 lg:px-20">
+    <section className="bg-sectionAlt py-24 px-6 md:px-10 lg:px-20">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-tidy-green mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-12">
           Frequently Asked Questions
         </h2>
 
@@ -42,10 +42,10 @@ const FAQSection: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white"
+                className="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-background"
               >
                 <button
-                  className="w-full flex items-center justify-between text-left px-6 py-4 text-base md:text-lg font-semibold text-tidy-green hover:bg-gray-100 focus:outline-none"
+                  className="w-full flex items-center justify-between text-left px-6 py-4 text-base md:text-lg font-semibold text-primary hover:bg-muted/10 focus:outline-none"
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
                 >
                   <span>{faq.question}</span>
@@ -56,7 +56,7 @@ const FAQSection: React.FC = () => {
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-6 pb-6 text-gray-700 text-sm md:text-base leading-relaxed">
+                  <div className="px-6 pb-6 text-muted text-sm md:text-base leading-relaxed">
                     {faq.answer}
                   </div>
                 )}
@@ -70,4 +70,3 @@ const FAQSection: React.FC = () => {
 };
 
 export default FAQSection;
-

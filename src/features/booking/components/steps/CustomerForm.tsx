@@ -72,14 +72,15 @@ const CustomerForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <h2 className="text-2xl font-bold text-center text-tidy-green">Your Details</h2>
-      <p className="text-center text-sm text-gray-600">
-        We’ll use this to confirm your booking and keep you updated.
-      </p>
+    <div className="max-w-2xl mx-auto p-6 space-y-8">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-primary">👤 Your Details</h2>
+        <p className="text-sm text-gray-600">We’ll use this to confirm your booking and keep you updated.</p>
+      </div>
 
-      <section>
-        <h3 className="text-lg font-semibold text-gray-800">Contact Information</h3>
+      {/* Contact Info */}
+      <section className="bg-mist border border-border rounded-xl p-5 space-y-4">
+        <h3 className="text-lg font-semibold">📇 Contact Info</h3>
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <label htmlFor="firstName" className="label-required">First Name</label>
@@ -88,12 +89,13 @@ const CustomerForm: React.FC = () => {
               type="text"
               value={bookingData.firstName || ""}
               onChange={(e) => handleChange("firstName", e.target.value)}
-              autoFocus
               required
               autoComplete="given-name"
               className="w-full border p-3 rounded"
+              aria-invalid={!!errors.firstName}
+              aria-describedby="firstName-error"
             />
-            {errors.firstName && <p className="error-text">{errors.firstName}</p>}
+            {errors.firstName && <p id="firstName-error" className="text-sm text-red-600 mt-1">{errors.firstName}</p>}
           </div>
           <div>
             <label htmlFor="lastName" className="label-required">Last Name</label>
@@ -105,8 +107,10 @@ const CustomerForm: React.FC = () => {
               required
               autoComplete="family-name"
               className="w-full border p-3 rounded"
+              aria-invalid={!!errors.lastName}
+              aria-describedby="lastName-error"
             />
-            {errors.lastName && <p className="error-text">{errors.lastName}</p>}
+            {errors.lastName && <p id="lastName-error" className="text-sm text-red-600 mt-1">{errors.lastName}</p>}
           </div>
         </div>
 
@@ -122,9 +126,11 @@ const CustomerForm: React.FC = () => {
               required
               autoComplete="tel"
               className="w-full border p-3 rounded"
+              aria-invalid={!!errors.phone}
+              aria-describedby="phone-error"
             />
             <p className="text-xs text-gray-500 mt-1">We’ll only contact you for booking reminders.</p>
-            {errors.phone && <p className="error-text">{errors.phone}</p>}
+            {errors.phone && <p id="phone-error" className="text-sm text-red-600 mt-1">{errors.phone}</p>}
           </div>
           <div>
             <label htmlFor="email" className="label-required">Email</label>
@@ -136,15 +142,18 @@ const CustomerForm: React.FC = () => {
               required
               autoComplete="email"
               className="w-full border p-3 rounded"
+              aria-invalid={!!errors.email}
+              aria-describedby="email-error"
             />
             <p className="text-xs text-gray-500 mt-1">We’ll never share your info. Used only for booking & reminders.</p>
-            {errors.email && <p className="error-text">{errors.email}</p>}
+            {errors.email && <p id="email-error" className="text-sm text-red-600 mt-1">{errors.email}</p>}
           </div>
         </div>
       </section>
 
-      <section>
-        <h3 className="text-lg font-semibold text-gray-800">Service Location</h3>
+      {/* Address */}
+      <section className="bg-mist border border-border rounded-xl p-5 space-y-4">
+        <h3 className="text-lg font-semibold">🏠 Service Address</h3>
         <div className="grid sm:grid-cols-3 gap-4">
           <div className="sm:col-span-2">
             <label htmlFor="address" className="label-required">Street Address</label>
@@ -181,15 +190,14 @@ const CustomerForm: React.FC = () => {
             className="w-full border p-3 rounded"
           />
           <datalist id="city-options">
-            {cities.map((c) => (
-              <option key={c} value={c} />
-            ))}
+            {cities.map((c) => <option key={c} value={c} />)}
           </datalist>
         </div>
       </section>
 
-      <section>
-        <h3 className="text-lg font-semibold text-gray-800">Preferences</h3>
+      {/* Preferences */}
+      <section className="bg-mist border border-border rounded-xl p-5 space-y-4">
+        <h3 className="text-lg font-semibold">🎯 Preferences</h3>
         <div>
           <label htmlFor="specialInstructions">Special Instructions</label>
           <textarea
@@ -205,7 +213,7 @@ const CustomerForm: React.FC = () => {
           <legend className="label-required">Preferred Contact Method</legend>
           <div className="flex gap-4 mt-1">
             {contactMethods.map((method) => (
-              <label key={method} className="inline-flex items-center gap-1">
+              <label key={method} className="inline-flex items-center gap-2">
                 <input
                   type="radio"
                   name="preferredContact"
@@ -231,9 +239,7 @@ const CustomerForm: React.FC = () => {
             className="w-full border p-3 rounded"
           >
             {timesOfDay.map((time) => (
-              <option key={time} value={time}>
-                {time.charAt(0).toUpperCase() + time.slice(1)}
-              </option>
+              <option key={time} value={time}>{time.charAt(0).toUpperCase() + time.slice(1)}</option>
             ))}
           </select>
         </div>
@@ -248,18 +254,19 @@ const CustomerForm: React.FC = () => {
             placeholder="Comma-separated"
             className="w-full border p-3 rounded"
           />
+          <p className="text-xs text-gray-500 mt-1">So we can say hi properly 🐶</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 flex items-start gap-3">
           <input
             id="marketingOptIn"
             type="checkbox"
             checked={bookingData.marketingOptIn || false}
             onChange={(e) => handleChange("marketingOptIn", e.target.checked)}
-            className="w-4 h-4"
+            className="mt-1 w-4 h-4"
           />
-          <label htmlFor="marketingOptIn" className="text-sm font-medium text-gray-700">
-            Yes, sign me up for occasional promotions
+          <label htmlFor="marketingOptIn" className="text-sm text-gray-700">
+            <strong>Yes!</strong> Sign me up for occasional promotions and seasonal deals.
           </label>
         </div>
       </section>
