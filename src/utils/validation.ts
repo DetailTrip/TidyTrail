@@ -39,13 +39,7 @@ export const serviceSelectionSchema = z
         message: "Please select a waste level for one-time cleanups",
       });
     }
-    if (data.frequency !== "onetime" && data.wasteLevel) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["wasteLevel"],
-        message: "Waste level is only for one-time cleanups",
-      });
-    }
+    
     if (data.addOns && new Set(data.addOns).size !== data.addOns.length) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

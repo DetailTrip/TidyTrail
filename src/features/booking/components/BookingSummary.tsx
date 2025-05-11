@@ -1,5 +1,3 @@
-// Updated BookingSummary.tsx to support prepay eligibility condition
-
 import React from "react";
 import { calculatePricing, Frequency, WasteLevel } from "@booking/utils/pricingLogic";
 import { useAvailability } from "@booking/hooks/useAvailability";
@@ -11,6 +9,7 @@ interface Props {
 }
 
 const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }) => {
+  console.log("📦 referralCode raw value:", booking.referralCode);
   const pricing = calculatePricing({
     frequency: booking.frequency as Frequency,
     dogCount: booking.dogCount,
@@ -20,14 +19,20 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
     prepaySelected: booking.prepaySelected,
   });
 
+  const isRecurring = ["weekly", "biweekly", "twice"].includes(booking.frequency);
   const visitsPerMonth = booking.frequency === "weekly" ? 4 : booking.frequency === "biweekly" ? 2 : booking.frequency === "twice" ? 8 : 1;
   const discountedPricePerVisit = booking.prepaySelected ? pricing.finalPricePerVisit * 0.9 : pricing.finalPricePerVisit;
   const enzymeAddOn = pricing.oneTimeAddOnsTotal ?? 0;
+
   const monthlyTotal = visitsPerMonth * discountedPricePerVisit;
-  const totalDueToday = (booking.prepaySelected ? monthlyTotal * 3 : monthlyTotal) + enzymeAddOn;
   const regular3mo = visitsPerMonth * pricing.finalPricePerVisit * 3;
   const savings = regular3mo - (booking.prepaySelected ? monthlyTotal * 3 : monthlyTotal);
-  const referralDiscount = booking.referralCode ? 10 : 0;
+
+  const totalDueToday = isRecurring
+    ? (booking.prepaySelected ? monthlyTotal * 3 : monthlyTotal)
+    : pricing.finalPricePerVisit + enzymeAddOn;
+
+  const referralDiscount = booking.referralCode?.trim() ? 10 : 0;
   const finalTotalDueNow = totalDueToday - referralDiscount;
 
   const dateObj = new Date(`${booking.firstServiceDate}T00:00:00`);
@@ -103,7 +108,7 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
                 <td className="text-right">+${pricing.dogSurcharge.toFixed(2)}</td>
               </tr>
             )}
-            {booking.prepaySelected && isPrepayEligible && (
+            {booking.prepaySelected && isPrepayEligible && isRecurring && (
               <tr className="border-t border-gray-200 py-2 bg-green-50">
                 <td>Prepay Discount (10%)</td>
                 <td className="text-right text-green-700">– ${(pricing.finalPricePerVisit * 0.1).toFixed(2)}</td>
@@ -116,7 +121,7 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
           </tbody>
         </table>
 
-        {booking.prepaySelected && isPrepayEligible && (
+        {booking.prepaySelected && isPrepayEligible && isRecurring && (
           <div className="mt-4 border-t pt-4 text-sm text-gray-800 space-y-1">
             <div className="flex justify-between">
               <span>3-Month Regular Price</span>
@@ -126,6 +131,12 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
               <span>10% Prepay Discount</span>
               <span>– ${savings.toFixed(2)}</span>
             </div>
+            {booking.referralCode?.trim() && (
+           <div className="flex justify-between text-green-700 font-semibold">
+              <span>Referral Discount</span>
+              <span>– $10.00</span>
+            </div>
+            )}
             {enzymeAddOn > 0 && (
               <div className="flex justify-between">
                 <span>Enzyme Cleaner (one-time)</span>
@@ -139,12 +150,16 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
           </div>
         )}
 
-        <div className="text-sm text-gray-600 mt-3">
-          Est. Monthly Total: ${monthlyTotal.toFixed(2)}<br />
-          <em className="text-xs text-gray-500">*Referral discount applies once — on your one-time cleanup or first monthly payment.</em>
-        </div>
+        {isRecurring && (
+          <div className="text-sm text-gray-600 mt-3">
+            Est. Monthly Total: ${monthlyTotal.toFixed(2)}<br />
+            <em className="text-xs text-gray-500">
+              *Referral discount applies once — on your one-time cleanup or first monthly payment.
+            </em>
+          </div>
+        )}
 
-        {booking.referralCode && (
+        {booking.referralCode?.trim() && (
           <div className="text-lg text-green-700 font-semibold mt-4">
             🎉 <strong>Total Due Today (after referral):</strong> ${finalTotalDueNow.toFixed(2)}
           </div>

@@ -93,23 +93,39 @@ const ServiceSelection: React.FC = () => {
       <fieldset>
         <legend className="text-2xl font-bold text-center">How often should we scoop?</legend>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-          {frequencies.map((freq) => (
-            <button
-              type="button"
-              key={freq.value}
-              className={`border rounded p-4 flex justify-between items-center transition shadow-sm text-left font-semibold aria-pressed:$
-                {bookingData.frequency === freq.value}`}
-              aria-pressed={bookingData.frequency === freq.value}
-              onClick={() => updateBooking({ frequency: freq.value as Frequency })}
-            >
-              <span>{freq.icon} {freq.label}</span>
-              {bookingData.frequency === freq.value && <Check className="w-4 h-4 text-green-600" />}
-            </button>
-          ))}
-        </div>
-        <p className="text-sm text-gray-600 text-center mt-3">
-          💸 Want to save more? Prepay 3 months at checkout and get <strong>10% off</strong> any recurring plan.
+  {frequencies.map((freq) => {
+    const isSelected = bookingData.frequency === freq.value;
+    return (
+      <button
+        type="button"
+        key={freq.value}
+        aria-label={`Select ${freq.label} frequency`}
+        aria-pressed={isSelected}
+        onClick={() => updateBooking({ frequency: freq.value as Frequency })}
+        className={`rounded-xl border p-4 flex items-center justify-between transition text-left font-semibold ${
+          isSelected
+            ? "ring-2 ring-green-500 border-green-500 bg-white shadow-md"
+            : "border-gray-300 hover:bg-gray-50 hover:shadow-sm"
+        }`}
+      >
+        <span className="inline-flex items-center gap-2">
+          {freq.icon} {freq.label}
+        </span>
+        {isSelected && <Check className="w-5 h-5 text-green-500" />}
+      </button>
+    );
+  })}
+</div>
+
+        <p className="text-sm text-green-900 bg-green-50 border border-green-200 rounded-md px-4 py-2 mt-4 text-center">
+          💸 Want to save more? Prepay 3 months at checkout and <strong>get 10% off</strong> any recurring plan.
         </p>
+
+        <div className="bg-sectionAlt border border-border rounded-md px-4 py-3 mt-3 text-center text-sm text-muted">
+          📅 Choose <strong>weekly, bi-weekly, or even twice a week</strong> — TidyTrails fits your schedule and keeps your yard spotless.
+        </div>
+
+
         {errors.frequency && <p className="text-sm text-red-600 mt-2">{errors.frequency}</p>}
         {bookingData.frequency === "onetime" && (
           <p className="text-sm italic text-center text-gray-500 mt-2">
@@ -145,31 +161,50 @@ const ServiceSelection: React.FC = () => {
         </fieldset>
       )}
 
-      <fieldset className="bg-highlight border border-accent px-4 py-4 rounded-xl">
-        <legend className="text-lg font-semibold mb-2">🐕‍🦺 How many dogs?</legend>
-        <div className="flex justify-center items-center gap-4">
-          <button
-            type="button"
-            className="bg-gray-200 hover:ring-2 hover:ring-green-400 w-10 h-10 rounded-full text-lg"
-            onClick={() => updateBooking({ dogCount: Math.max((bookingData.dogCount || 1) - 1, 1) })}
-          >
-            -
-          </button>
-          <span className="text-xl font-semibold">{bookingData.dogCount || 1}</span>
-          <button
-            type="button"
-            className="bg-gray-200 hover:ring-2 hover:ring-green-400 w-10 h-10 rounded-full text-lg"
-            onClick={() => updateBooking({ dogCount: Math.min((bookingData.dogCount || 1) + 1, 6) })}
-          >
-            +
-          </button>
-        </div>
-        {errors.dogCount && <p className="text-sm text-red-600 text-center mt-2">{errors.dogCount}</p>}
-        <p className="text-sm text-gray-500 text-center mt-1">Used to calculate your price.</p>
-        <p className="text-yellow-800 bg-yellow-100 border border-yellow-300 text-sm rounded px-3 py-2 mt-2 text-center">
-          ⚠️ Heads up! A small fee is included automatically if you have more than 2 dogs.
-        </p>
-      </fieldset>
+      <fieldset className="bg-mist border border-accent px-4 py-4 rounded-xl">
+  <legend className="text-lg font-semibold mb-2">🐕‍🦺 How many dogs?</legend>
+
+  <div className="flex justify-center items-center gap-4">
+    <button
+      type="button"
+      aria-label="Decrease dog count"
+      className="bg-gray-200 hover:ring-2 hover:ring-green-400 w-10 h-10 rounded-full text-lg transition-transform active:scale-90"
+      onClick={() => updateBooking({ dogCount: Math.max((bookingData.dogCount || 1) - 1, 1) })}
+    >
+      -
+    </button>
+    <span className="text-xl font-semibold">{bookingData.dogCount || 1}</span>
+    <button
+  type="button"
+  aria-label="Increase dog count"
+  disabled={bookingData.dogCount === 6}
+  aria-disabled={bookingData.dogCount === 6}
+  onClick={() =>
+    updateBooking({ dogCount: Math.min((bookingData.dogCount || 1) + 1, 6) })
+  }
+  className={`bg-gray-200 w-10 h-10 rounded-full text-lg transition-transform ${
+    bookingData.dogCount === 6
+      ? "opacity-50 cursor-not-allowed"
+      : "hover:ring-2 hover:ring-green-400 active:scale-90"
+  }`}
+>
+  +
+</button>
+
+  </div>
+
+  {errors.dogCount && <p className="text-sm text-red-600 text-center mt-2">{errors.dogCount}</p>}
+
+  <p className="text-sm text-gray-500 text-center mt-1">Used to calculate your price.</p>
+
+  <p
+    className="text-yellow-800 bg-yellow-100 border border-yellow-300 text-sm rounded px-3 py-2 mt-2 text-center"
+    aria-live="polite"
+  >
+    ⚠️ Heads up! A small fee is included automatically if you have more than 2 dogs.
+  </p>
+</fieldset>
+
 
       <fieldset>
         <legend className="text-lg font-semibold mb-2">🏡 What parts of the yard?</legend>
@@ -197,33 +232,37 @@ const ServiceSelection: React.FC = () => {
       </fieldset>
 
       <fieldset className="pt-4">
-        <legend className="text-lg font-semibold mb-2">🧼 Deep Clean Add-On</legend>
-        <div
-          className={`p-4 rounded-lg shadow-sm border bg-mist flex items-start gap-4 ${
-            bookingData.addOns?.includes("enzymeCleaner")
-              ? "ring-2 ring-green-500 border-green-500"
-              : "hover:bg-gray-100"
-          }`}
-        >
-          <input
-            type="checkbox"
-            checked={bookingData.addOns?.includes("enzymeCleaner") || false}
-            onChange={(e) => {
-              const updated = e.target.checked ? ["enzymeCleaner"] : [];
-              updateBooking({ addOns: updated });
-            }}
-            className="mt-1 w-5 h-5 shrink-0"
-            aria-label="Add enzyme cleaner for $18"
-          />
-          <div>
-            <span className="font-medium">Add Enzyme Cleaner (+$18)</span>
-            <p className="text-sm text-gray-600 mt-1">
-              EZ-CLEAN™ is a Canadian-made, pet-safe formula that breaks down bacteria,
-              odors, and organic stains using natural enzymes.
-            </p>
-          </div>
-        </div>
-      </fieldset>
+  <legend className="text-lg font-semibold mb-4 flex items-center justify-center gap-2">
+    <span role="img" aria-label="sparkles">🧼</span> Deep Clean Add-On
+  </legend>
+  <button
+    type="button"
+    onClick={() => {
+      const checked = bookingData.addOns?.includes("enzymeCleaner");
+      const updated = checked ? [] : ["enzymeCleaner"];
+      updateBooking({ addOns: updated });
+    }}
+    className={`w-full text-left bg-mist rounded-xl p-4 shadow-sm transition flex items-start gap-4 cursor-pointer ${
+      bookingData.addOns?.includes("enzymeCleaner")
+        ? "ring-2 ring-green-500 border-green-500 bg-white"
+        : "border border-gray-300 hover:border-accent/60 hover:ring-1 hover:ring-accent/30 hover:bg-white"
+    }`}
+    aria-pressed={bookingData.addOns?.includes("enzymeCleaner")}
+  >
+    <div className="pt-[2px] text-lg">🧼</div>
+    <div>
+      <div className="font-semibold text-md">
+        Add Enzyme Cleaner <span className="text-sm font-normal text-muted">(+$18)</span>
+      </div>
+      <p className="text-sm text-gray-600 mt-1">
+        EZ-CLEAN™ is a Canadian-made, pet-safe enzyme spray that breaks down odors,
+        bacteria, and organic waste.
+      </p>
+    </div>
+  </button>
+</fieldset>
+
+
     </div>
   );
 };

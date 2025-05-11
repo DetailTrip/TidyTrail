@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Copy, MessageCircle, Smartphone, Facebook, X, Send } from "lucide-react";
+import React, { useEffect, useState, useCallback } from "react";
+import { X, Send, Copy, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 
@@ -10,8 +10,8 @@ interface ReferralModalProps {
 }
 
 const ReferralModal: React.FC<ReferralModalProps> = ({ code, isOpen, onClose }) => {
-  const referralLink = `${window.location.origin}/booking?ref=${code}`;
   const [copied, setCopied] = useState(false);
+  const referralLink = `${window.location.origin}/booking?ref=${code}`;
 
   useEffect(() => {
     if (isOpen) {
@@ -23,7 +23,7 @@ const ReferralModal: React.FC<ReferralModalProps> = ({ code, isOpen, onClose }) 
     }
   }, [isOpen]);
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(referralLink);
       setCopied(true);
@@ -31,7 +31,7 @@ const ReferralModal: React.FC<ReferralModalProps> = ({ code, isOpen, onClose }) 
     } catch {
       alert("Could not copy. Try manually.");
     }
-  };
+  }, [referralLink]);
 
   return (
     <AnimatePresence>
@@ -67,41 +67,22 @@ const ReferralModal: React.FC<ReferralModalProps> = ({ code, isOpen, onClose }) 
               Give your friends <strong>$10 off</strong> their first cleanup — you’ll get <strong>$10 off</strong> too!
             </p>
 
-            {/* Link box */}
-            <div className="bg-tidy-mist border border-tidy-green rounded px-4 py-2 font-mono text-sm text-tidy-green truncate">
+            {/* Referral link and actions */}
+            <div className="bg-muted/10 border border-muted px-4 py-2 rounded-md text-sm font-mono select-all">
               {referralLink}
             </div>
-            {copied && <p className="text-green-700 text-sm">✅ Copied to clipboard!</p>}
-
-            {/* Buttons */}
-            <div className="flex flex-wrap justify-center gap-3 pt-2">
+            <div className="flex flex-wrap justify-center gap-2 pt-2">
               <button
                 onClick={handleCopy}
-                className="flex items-center gap-2 bg-tidy-green hover:bg-green-800 text-white px-4 py-2 text-sm rounded-lg transition"
+                className="flex items-center gap-1 bg-primary hover:bg-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow"
               >
-                <Copy className="w-4 h-4" /> Copy Link
+                <Copy className="w-4 h-4" /> {copied ? "Copied!" : "Copy Link"}
               </button>
               <a
-                href={`https://www.messenger.com/share?link=${encodeURIComponent(referralLink)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 text-sm rounded-lg transition"
+                href={`sms:&body=Check out TidyTrails and get $10 off your first cleanup! ${referralLink}`}
+                className="flex items-center gap-1 bg-accent hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow"
               >
-                <MessageCircle className="w-4 h-4" /> Messenger
-              </a>
-              <a
-                href={`sms:?&body=${encodeURIComponent(`Check this out: ${referralLink}`)}`}
-                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 text-sm rounded-lg transition"
-              >
-                <Smartphone className="w-4 h-4" /> Text a Friend
-              </a>
-              <a
-                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Try this: ${referralLink}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1EBE54] text-white px-4 py-2 text-sm rounded-lg transition"
-              >
-                <Facebook className="w-4 h-4" /> WhatsApp
+                <MessageCircle className="w-4 h-4" /> Send via Text
               </a>
             </div>
 

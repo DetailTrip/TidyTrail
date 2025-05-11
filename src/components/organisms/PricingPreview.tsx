@@ -2,23 +2,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Repeat, CalendarClock, Sparkles, Copy, MessageCircle } from "lucide-react";
+import { Repeat, CalendarClock, Sparkles } from "lucide-react";
+import ReferralModal from "@components/ui/ReferralModal";
 
 const PricingPreview: React.FC = () => {
-  const [copied, setCopied] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const referralCode = "TIDY10";
-  const referralLink = `${window.location.origin}/booking?ref=${referralCode}`;
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(referralLink);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    } catch {
-      alert("Copy failed. Please try manually.");
-    }
-  };
 
   return (
     <section id="pricing" className="bg-sectionAlt px-6 text-center section-spacing">
@@ -124,40 +113,12 @@ const PricingPreview: React.FC = () => {
           </button>
         </div>
 
-        {/* Modal */}
-        {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-            <div className="bg-white max-w-md w-full rounded-xl p-6 shadow-xl space-y-4 text-left">
-              <h3 className="text-xl font-bold text-primary">💚 Give $10, Get $10</h3>
-              <p className="text-sm text-muted">
-                Share your link. When your friend books their first cleanup, you both get $10 off.
-              </p>
-              <div className="bg-muted/10 border border-muted px-4 py-2 rounded-md text-sm font-mono select-all">
-                {referralLink}
-              </div>
-              <div className="flex gap-2 pt-2">
-                <button
-                  onClick={handleCopy}
-                  className="flex items-center gap-1 bg-primary hover:bg-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow"
-                >
-                  <Copy className="w-4 h-4" /> {copied ? "Copied!" : "Copy Link"}
-                </button>
-                <a
-                  href={`sms:&body=Check out TidyTrails and get $10 off your first cleanup! ${referralLink}`}
-                  className="flex items-center gap-1 bg-accent hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow"
-                >
-                  <MessageCircle className="w-4 h-4" /> Send via Text
-                </a>
-              </div>
-              <button
-                onClick={() => setShowModal(false)}
-                className="block text-sm text-muted hover:text-primary mt-2 mx-auto"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Reusable Referral Modal */}
+        <ReferralModal
+          code={referralCode}
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+        />
 
         {/* Pricing Disclaimer */}
         <p className="text-xs text-muted max-w-2xl mx-auto mt-10">

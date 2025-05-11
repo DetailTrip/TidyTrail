@@ -39,16 +39,23 @@ const CustomerForm: React.FC = () => {
 
   useEffect(() => {
     const saved = localStorage.getItem("tidyDraft");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        Object.entries(parsed).forEach(([key, value]) => {
-          updateBooking({ [key]: value });
-        });
-      } catch (e) {
-        console.warn("Could not parse saved draft");
-      }
+if (saved) {
+  try {
+    const parsed = JSON.parse(saved);
+
+    // Set a default fallback for marketingOptIn
+    if (typeof parsed.marketingOptIn === "undefined") {
+      parsed.marketingOptIn = false;
     }
+
+    Object.entries(parsed).forEach(([key, value]) => {
+      updateBooking({ [key]: value });
+    });
+  } catch (e) {
+    console.warn("Could not parse saved draft");
+  }
+}
+
   }, []);
 
   useEffect(() => {

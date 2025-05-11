@@ -1,4 +1,4 @@
-// Updated ReviewStep.tsx with BookingSummary extraction + prepay logic fix
+// src/features/booking/components/steps/ReviewStep.tsx
 
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +27,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ goBack, goToStep }) => {
   const handleConfirm = () => {
     try {
       fullBookingSchema.parse(bookingData);
+
       const pricing = calculatePricing({
         frequency: bookingData.frequency as Frequency,
         dogCount: bookingData.dogCount!,
@@ -35,13 +36,32 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ goBack, goToStep }) => {
         referralCode: bookingData.referralCode,
         prepaySelected: bookingData.prepaySelected,
       });
-      const visitsPerMonth = bookingData.frequency === "weekly" ? 4 : bookingData.frequency === "biweekly" ? 2 : bookingData.frequency === "twice" ? 8 : 1;
-      const discountedPricePerVisit = bookingData.prepaySelected ? pricing.finalPricePerVisit * 0.9 : pricing.finalPricePerVisit;
+
+      const isRecurring = ["weekly", "biweekly", "twice"].includes(bookingData.frequency as Frequency);
       const enzymeAddOn = pricing.oneTimeAddOnsTotal ?? 0;
-      const monthlyTotal = visitsPerMonth * discountedPricePerVisit;
-      const totalDueToday = (bookingData.prepaySelected ? monthlyTotal * 3 : monthlyTotal) + enzymeAddOn;
+
+      const visitsPerMonth =
+        bookingData.frequency === "weekly"
+          ? 4
+          : bookingData.frequency === "biweekly"
+          ? 2
+          : bookingData.frequency === "twice"
+          ? 8
+          : 1;
+
+      const discountedPricePerVisit = bookingData.prepaySelected
+        ? pricing.finalPricePerVisit * 0.9
+        : pricing.finalPricePerVisit;
+
+      const totalDueToday = isRecurring
+        ? (bookingData.prepaySelected
+            ? discountedPricePerVisit * visitsPerMonth * 3
+            : discountedPricePerVisit * visitsPerMonth)
+        : pricing.finalPricePerVisit + enzymeAddOn;
+
       const referralDiscount = bookingData.referralCode ? 10 : 0;
       const finalTotalDueNow = totalDueToday - referralDiscount;
+
       const payload = transformBookingData(bookingData, finalTotalDueNow);
       mutate(payload);
     } catch (e) {
@@ -66,18 +86,28 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ goBack, goToStep }) => {
               className="mt-1"
             />
             <span>
-              <strong>Save 10% when you prepay 3 months.</strong><br />
+              <strong>Save 10% when you prepay 3 months.</strong>
+              <br />
               Pay upfront and cancel anytime. Discount applies immediately.
             </span>
           </label>
         </div>
       )}
 
-      <BookingSummary booking={bookingData} goToStep={goToStep} isPrepayEligible={isPrepayEligible} />
+      <BookingSummary
+        booking={bookingData}
+        goToStep={goToStep}
+        isPrepayEligible={isPrepayEligible}
+      />
 
       <div className="pt-6 space-y-4">
-        <p className="text-center text-sm text-gray-500">✅ Everything look good? Let’s get your yard poop-free!</p>
-        <button onClick={goBack} className="w-full border border-gray-300 text-gray-700 py-2 px-6 rounded hover:bg-gray-100">
+        <p className="text-center text-sm text-gray-500">
+          ✅ Everything look good? Let’s get your yard poop-free!
+        </p>
+        <button
+          onClick={goBack}
+          className="w-full border border-gray-300 text-gray-700 py-2 px-6 rounded hover:bg-gray-100"
+        >
           ← Back to Edit
         </button>
         <button
@@ -85,7 +115,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ goBack, goToStep }) => {
           disabled={isLoading}
           className="w-full bg-primary hover:bg-green-800 text-white font-semibold py-3 px-6 rounded disabled:opacity-50 text-lg"
         >
-          {isLoading ? "Booking..." : bookingData.prepaySelected ? "🚀 Book Now & Save 10%" : "✅ Confirm My Cleanup"}
+          {isLoading
+            ? "Booking..."
+            : bookingData.prepaySelected
+            ? "🚀 Book Now & Save 10%"
+            : "✅ Confirm My Cleanup"}
         </button>
         {isError && (
           <p className="text-red-600 text-center mt-4" aria-live="polite">
