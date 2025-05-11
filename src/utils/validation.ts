@@ -107,4 +107,3 @@ export const fullBookingSchema = serviceSelectionSchema
   .and(customerInfoSchema);
 
 export type FullBookingData = z.infer<typeof fullBookingSchema>;
-
