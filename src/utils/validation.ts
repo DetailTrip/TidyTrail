@@ -22,11 +22,11 @@ const AreaEnum        = z.enum([
   "Patio/Driveway",
 ]);
 
-// Step 1: ServiceSelection (frequency, dog count, waste level if one-time)
+// Step 1: ServiceSelection (frequency, waste level if one-time)
 export const serviceSelectionSchema = z
   .object({
     frequency:  FrequencyEnum,
-    dogCount:   z.number().int().min(1).max(6),
+    // dogCount removed from validation — always defaults in UI
     wasteLevel: WasteLevelEnum.optional(),
     addOns:     z.array(AddOnEnum).optional(),
     areas:      z.array(AreaEnum).min(1, { message: "Please select at least one service area" }),
@@ -39,7 +39,7 @@ export const serviceSelectionSchema = z
         message: "Please select a waste level for one-time cleanups",
       });
     }
-    
+
     if (data.addOns && new Set(data.addOns).size !== data.addOns.length) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -107,3 +107,4 @@ export const fullBookingSchema = serviceSelectionSchema
   .and(customerInfoSchema);
 
 export type FullBookingData = z.infer<typeof fullBookingSchema>;
+

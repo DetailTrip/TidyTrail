@@ -1,3 +1,5 @@
+// src/features/booking/components/BookingSummary.tsx
+
 import React from "react";
 import { calculatePricing, Frequency, WasteLevel } from "@booking/utils/pricingLogic";
 import { useAvailability } from "@booking/hooks/useAvailability";
@@ -9,7 +11,6 @@ interface Props {
 }
 
 const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }) => {
-  console.log("📦 referralCode raw value:", booking.referralCode);
   const pricing = calculatePricing({
     frequency: booking.frequency as Frequency,
     dogCount: booking.dogCount,
@@ -26,10 +27,12 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
 
   const monthlyTotal = visitsPerMonth * discountedPricePerVisit;
   const regular3mo = visitsPerMonth * pricing.finalPricePerVisit * 3;
-  const savings = regular3mo - (booking.prepaySelected ? monthlyTotal * 3 : monthlyTotal);
+  const savings = regular3mo - monthlyTotal * 3;
 
   const totalDueToday = isRecurring
-    ? (booking.prepaySelected ? monthlyTotal * 3 : monthlyTotal)
+    ? booking.prepaySelected
+      ? monthlyTotal * 3
+      : monthlyTotal
     : pricing.finalPricePerVisit + enzymeAddOn;
 
   const referralDiscount = booking.referralCode?.trim() ? 10 : 0;
@@ -44,18 +47,18 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
   });
 
   const { data: weekendInfo, isLoading: avLoading } = useAvailability(booking.firstServiceDate);
+  const isWeekend = [0, 6].includes(dateObj.getDay());
 
   return (
     <>
       {/* Service Info */}
-      <section className="bg-mist border border-border rounded-xl p-5 space-y-2">
+      <section className="space-y-2 pt-6 border-t border-border">
         <div className="flex justify-between items-center">
-          <h3 className="font-semibold">🐶 Service Info</h3>
+          <h3 className="text-base font-semibold inline-flex items-center gap-2">🐶 <span>Service Info</span></h3>
           {goToStep && (
             <button type="button" onClick={() => goToStep(0)} className="text-sm text-blue-600 hover:underline">Edit</button>
           )}
         </div>
-        <div><strong>Service:</strong> Pet Waste Cleanup</div>
         <div><strong>Frequency:</strong> {booking.frequency}</div>
         {booking.frequency === "onetime" && <div><strong>Waste Level:</strong> {booking.wasteLevel}</div>}
         <div><strong>Dog Count:</strong> {booking.dogCount}</div>
@@ -65,18 +68,21 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
             🧼 <strong>Enzyme Cleaner:</strong> one-time deep clean for stubborn odors (+$18)
           </div>
         )}
-        <div><strong>First Cleanup Date:</strong> <span className="text-secondary font-semibold">{friendlyDate}</span></div>
+        <div>
+          <strong>First Cleanup Date:</strong> <span className="text-secondary font-semibold">{friendlyDate}</span>
+          {isWeekend && <span className="ml-2 text-xs text-muted">(weekend)</span>}
+        </div>
         {avLoading ? (
-          <div className="text-sm text-gray-500" aria-live="polite">Checking weekend slots…</div>
+          <div className="animate-pulse h-4 w-32 bg-gray-200 rounded" aria-hidden="true" />
         ) : weekendInfo ? (
           <div className="text-sm text-gray-600" aria-live="polite">{weekendInfo.spotsLeft} {weekendInfo.spotsLeft === 1 ? "slot" : "slots"} left this weekend</div>
         ) : null}
       </section>
 
       {/* Contact Info */}
-      <section className="bg-mist border border-border rounded-xl p-5 space-y-2">
+      <section className="space-y-2 pt-6 border-t border-border">
         <div className="flex justify-between items-center">
-          <h3 className="font-semibold">👤 Contact Info</h3>
+          <h3 className="text-base font-semibold inline-flex items-center gap-2">👤 <span>Contact Info</span></h3>
           {goToStep && (
             <button type="button" onClick={() => goToStep(2)} className="text-sm text-blue-600 hover:underline">Edit</button>
           )}
@@ -84,7 +90,6 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
         <div><strong>Name:</strong> {booking.firstName} {booking.lastName}</div>
         <div><strong>Email:</strong> {booking.email}</div>
         <div><strong>Phone:</strong> {booking.phone}</div>
-        <p className="text-xs text-gray-500 mt-1">We’ll never share your info. Only used for bookings & reminders.</p>
         <div>
           <strong>Address:</strong> {booking.address}
           {booking.unit ? `, Apt ${booking.unit}` : ""}
@@ -94,32 +99,43 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
       </section>
 
       {/* Pricing Summary */}
-      <section className="bg-mist border border-border rounded-xl p-5">
-        <h3 className="font-semibold mb-2">💰 Pricing Summary</h3>
-        <table className="w-full text-sm">
-          <tbody>
-            <tr className="border-t border-gray-200 py-2">
-              <td>Base Price/Visit</td>
-              <td className="text-right">${pricing.basePricePerVisit.toFixed(2)}</td>
-            </tr>
-            {pricing.dogSurcharge > 0 && (
+      <section className="space-y-4 pt-6 border-t border-border">
+        <h3 className="text-base font-semibold inline-flex items-center gap-2">💰 <span>Pricing Summary</span></h3>
+        <div className="bg-mist border border-border rounded-xl p-4">
+          <table className="w-full text-sm">
+            <tbody>
               <tr className="border-t border-gray-200 py-2">
-                <td>Dog Surcharge</td>
-                <td className="text-right">+${pricing.dogSurcharge.toFixed(2)}</td>
+                <td>Base Price/Visit</td>
+                <td className="text-right">${pricing.basePricePerVisit.toFixed(2)}</td>
               </tr>
-            )}
-            {booking.prepaySelected && isPrepayEligible && isRecurring && (
-              <tr className="border-t border-gray-200 py-2 bg-green-50">
-                <td>Prepay Discount (10%)</td>
-                <td className="text-right text-green-700">– ${(pricing.finalPricePerVisit * 0.1).toFixed(2)}</td>
+              {pricing.dogSurcharge > 0 && (
+                <tr className="border-t border-gray-200 py-2">
+                  <td>Dog Surcharge</td>
+                  <td className="text-right">+${pricing.dogSurcharge.toFixed(2)}</td>
+                </tr>
+              )}
+              {booking.prepaySelected && isPrepayEligible && isRecurring && (
+                <tr className="border-t border-gray-200 py-2 bg-green-50">
+                  <td>Prepay Discount (10%)</td>
+                  <td className="text-right text-green-700">– ${(pricing.finalPricePerVisit * 0.1).toFixed(2)}</td>
+                </tr>
+              )}
+              <tr className="font-bold border-t text-lg bg-highlight ring-1 ring-accent">
+                <td>Total Per Visit</td>
+                <td className="text-right">${discountedPricePerVisit.toFixed(2)}</td>
               </tr>
-            )}
-            <tr className="font-bold border-t text-lg bg-highlight ring-1 ring-accent">
-              <td>Total Per Visit</td>
-              <td className="text-right">${discountedPricePerVisit.toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+
+          {isRecurring && (
+            <div className="text-sm text-gray-600 mt-3">
+              Est. Monthly Total: ${monthlyTotal.toFixed(2)}<br />
+              <em className="text-xs text-gray-500">
+                *Referral discount applies once — on your one-time cleanup or first monthly payment.
+              </em>
+            </div>
+          )}
+        </div>
 
         {booking.prepaySelected && isPrepayEligible && isRecurring && (
           <div className="mt-4 border-t pt-4 text-sm text-gray-800 space-y-1">
@@ -132,10 +148,10 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
               <span>– ${savings.toFixed(2)}</span>
             </div>
             {booking.referralCode?.trim() && (
-           <div className="flex justify-between text-green-700 font-semibold">
-              <span>Referral Discount</span>
-              <span>– $10.00</span>
-            </div>
+              <div className="flex justify-between text-green-700 font-semibold">
+                <span>Referral Discount</span>
+                <span>– $10.00</span>
+              </div>
             )}
             {enzymeAddOn > 0 && (
               <div className="flex justify-between">
@@ -144,24 +160,18 @@ const BookingSummary: React.FC<Props> = ({ booking, goToStep, isPrepayEligible }
               </div>
             )}
             <div className="flex justify-between font-bold text-lg text-primary border-t pt-2">
-              <span>Total Due Today (3 Months)</span>
-              <span>${totalDueToday.toFixed(2)}</span>
+              <span>Total Due Today</span>
+              <span>${finalTotalDueNow.toFixed(2)}</span>
             </div>
-          </div>
-        )}
-
-        {isRecurring && (
-          <div className="text-sm text-gray-600 mt-3">
-            Est. Monthly Total: ${monthlyTotal.toFixed(2)}<br />
-            <em className="text-xs text-gray-500">
-              *Referral discount applies once — on your one-time cleanup or first monthly payment.
-            </em>
-          </div>
-        )}
-
-        {booking.referralCode?.trim() && (
-          <div className="text-lg text-green-700 font-semibold mt-4">
-            🎉 <strong>Total Due Today (after referral):</strong> ${finalTotalDueNow.toFixed(2)}
+            {booking.referralCode?.trim() ? (
+              <div className="text-xs text-muted text-center pt-1">
+                Includes 3-month prepay & referral savings
+              </div>
+            ) : (
+              <div className="text-xs text-muted text-center pt-1">
+                Includes 3-month prepay
+              </div>
+            )}
           </div>
         )}
       </section>

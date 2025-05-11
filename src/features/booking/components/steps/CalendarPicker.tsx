@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { useBookingContext } from "@booking/context/BookingContext";
 import { useAvailability, DayAvailability } from "@booking/hooks/useAvailability";
+import { calendarSchema } from "@utils/validation";
+import { ZodError } from "zod";
 
 // Parse a YYYY-MM-DD string into a local Date at midnight
 function parseLocalDate(dateStr: string): Date {
@@ -26,9 +28,14 @@ const CalendarPicker: React.FC = () => {
   const { data, isLoading, isError } = useAvailability(selectedDate);
   const availability: DayAvailability | null = data ?? null;
 
-  const handleDateChange = (v: string) => {
-    setSelectedDate(v);
-    updateBooking({ firstServiceDate: v });
+  const handleDateChange = (value: string) => {
+    if (!isWeekend(value)) {
+      setErrorMessage("Please select a Saturday or Sunday.");
+      return;
+    }
+
+    setSelectedDate(value);
+    updateBooking({ firstServiceDate: value });
     setErrorMessage(null);
   };
 
@@ -52,9 +59,16 @@ const CalendarPicker: React.FC = () => {
           className="border border-border p-3 rounded-md w-full bg-white text-center shadow-sm"
         />
 
+        <p className="text-xs text-muted mt-1 text-center">
+          Only Saturdays and Sundays are available
+        </p>
+
         {isLoading && (
-          <p className="mt-3 text-sm text-gray-500" aria-live="polite">🌀 Checking availability...</p>
+          <p className="mt-3 text-sm text-gray-500" aria-live="polite">
+            🌀 Checking availability...
+          </p>
         )}
+
         {isError && (
           <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded" aria-live="polite">
             ❌ Error loading availability. Please try again.
@@ -75,7 +89,7 @@ const CalendarPicker: React.FC = () => {
 
         {availability && availability.available && availability.spotsLeft < 30 && (
           <p className="inline-block mt-3 bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full" aria-live="polite">
-            ✅ {availability.spotsLeft} {availability.spotsLeft === 1 ? "spot" : "spots"} left for that day
+            ✅ Only {availability.spotsLeft} weekend {availability.spotsLeft === 1 ? "spot" : "spots"} left — book before it’s full!
           </p>
         )}
 
@@ -85,6 +99,16 @@ const CalendarPicker: React.FC = () => {
       </div>
     </div>
   );
+};
+
+// ✅ Zod validation function for this step
+export const validate = (data: any) => {
+  try {
+    calendarSchema.parse(data);
+    return true;
+  } catch (error) {
+    return false;
+  }
 };
 
 export default CalendarPicker;

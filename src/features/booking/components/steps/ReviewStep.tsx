@@ -73,34 +73,46 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ goBack, goToStep }) => {
   const isPrepayEligible = bookingData.frequency !== "onetime";
 
   return (
-    <div className="max-w-xl mx-auto p-6 space-y-6">
-      <h2 className="text-2xl font-bold text-center text-primary">🧾 Review Your Booking</h2>
+    <div className="max-w-xl mx-auto p-6 space-y-10">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-primary">🧾 Review Your Booking</h2>
+        <p className="text-sm text-gray-600">Take a final look and confirm your details.</p>
+      </div>
 
+      {/* Prepay Option */}
       {isPrepayEligible && (
-        <div className="bg-highlight border border-accent rounded p-4 text-sm">
-          <label className="flex items-start gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={bookingData.prepaySelected || false}
-              onChange={(e) => updateBooking({ prepaySelected: e.target.checked })}
-              className="mt-1"
-            />
-            <span>
-              <strong>Save 10% when you prepay 3 months.</strong>
-              <br />
-              Pay upfront and cancel anytime. Discount applies immediately.
-            </span>
-          </label>
-        </div>
+        <section className="space-y-3 pt-6 border-t border-border">
+          <h3 className="text-lg font-semibold">💸 Save with Prepay</h3>
+          <div className="bg-highlight border border-accent rounded p-4 text-sm">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={bookingData.prepaySelected || false}
+                onChange={(e) => updateBooking({ prepaySelected: e.target.checked })}
+                className="mt-1"
+              />
+              <span>
+                <strong>Save 10% when you prepay 3 months.</strong>
+                <br />
+                Pay upfront and cancel anytime. Discount applies immediately.
+              </span>
+            </label>
+          </div>
+        </section>
       )}
 
-      <BookingSummary
-        booking={bookingData}
-        goToStep={goToStep}
-        isPrepayEligible={isPrepayEligible}
-      />
+      {/* Summary Section */}
+      <section className="space-y-3 pt-6 border-t border-border">
+        <h3 className="text-lg font-semibold">📋 Summary</h3>
+        <BookingSummary
+          booking={bookingData}
+          goToStep={goToStep}
+          isPrepayEligible={isPrepayEligible}
+        />
+      </section>
 
-      <div className="pt-6 space-y-4">
+      {/* Final CTA */}
+      <section className="space-y-4 pt-6 border-t border-border">
         <p className="text-center text-sm text-gray-500">
           ✅ Everything look good? Let’s get your yard poop-free!
         </p>
@@ -126,7 +138,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ goBack, goToStep }) => {
             Error: {(error as Error)?.message || "Something went wrong."}
           </p>
         )}
-      </div>
+      </section>
     </div>
   );
 };
