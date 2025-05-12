@@ -1,4 +1,3 @@
-// src/components/organisms/WhyHomeownersLove.tsx
 import React from "react";
 import { motion } from "framer-motion";
 import {
@@ -44,15 +43,24 @@ const mergedReasons = [
 ];
 
 const WhyHomeownersLove: React.FC = () => {
+  const scrollToPricing = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = document.getElementById("pricing");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className="bg-sectionAlt section-spacing px-6">
       <div className="max-w-6xl mx-auto space-y-14">
+        {/* Section Heading */}
         <div className="text-center">
           <span className="inline-block text-xs uppercase font-semibold tracking-wider text-accent bg-accent/10 px-3 py-1 rounded-full mb-8">
             Local Trust. Real Benefits.
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-primary">
-            Why Homeowners Love TidyTrails
+            The Poop-Free Perks of Choosing TidyTrails
           </h2>
           <p className="text-base text-muted max-w-xl mx-auto mt-4">
             Built in Timmins. Trusted by your neighbors. Backed by real values.
@@ -60,25 +68,37 @@ const WhyHomeownersLove: React.FC = () => {
           <span className="block w-12 h-1 bg-accent mx-auto mt-6 rounded-full" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+        {/* Benefits List */}
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
           {mergedReasons.map((item, idx) => (
-            <motion.div
+            <motion.li
               key={idx}
               className="group flex gap-4 items-start bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20, scale: 0.97 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.4, delay: idx * 0.07 }}
               viewport={{ once: true, amount: 0.3 }}
             >
-              <div className="pt-1 flex-shrink-0 group-hover:scale-110 group-hover:-translate-y-[2px] transition-transform duration-200">
+              <div className="pt-1 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 group-hover:-translate-y-[2px] transition-transform duration-200">
                 {item.icon}
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-secondary">{item.title}</h3>
                 <p className="text-sm text-muted mt-1">{item.description}</p>
               </div>
-            </motion.div>
+            </motion.li>
           ))}
+        </ul>
+
+        {/* Soft CTA footer */}
+        <div className="text-center pt-10">
+          <a
+            href="#pricing"
+            onClick={scrollToPricing}
+            className="inline-block text-tidy-green hover:underline font-semibold transition"
+          >
+            View Plans & Pricing →
+          </a>
         </div>
       </div>
     </section>

@@ -1,4 +1,3 @@
-// src/components/organisms/PricingPreview.tsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -20,14 +19,14 @@ const PricingPreview: React.FC = () => {
           Weekly. Bi-weekly. One-time. You pick the pace.
         </p>
 
-        {/* Subheading with upsell context */}
         <p className="text-base sm:text-lg text-muted max-w-2xl mx-auto mt-2">
           Save 10% when you prepay — or refer a friend and both save $10.
         </p>
 
-        <div className="bg-white rounded-2xl shadow-inner ring-1 ring-border/20 mt-14 p-6 md:p-8">
+        {/* Plans */}
+        <div className="bg-white rounded-2xl shadow-inner ring-1 ring-border/20 mt-14 p-6 md:p-8 overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-border/30">
-            {/* Weekly Service */}
+            {/* Weekly */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -35,9 +34,11 @@ const PricingPreview: React.FC = () => {
               viewport={{ once: true, amount: 0.3 }}
               className="relative bg-white rounded-xl p-8 flex flex-col items-center space-y-6 md:pr-6 hover:scale-[1.02] hover:shadow-lg transition-transform"
             >
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full shadow">
-                Most Popular
-              </span>
+              <div className="absolute top-4 left-4">
+                <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                  Most Popular
+                </span>
+              </div>
               <div className="text-accent"> <Repeat className="w-6 h-6" /> </div>
               <h3 className="text-xl font-semibold text-secondary">Weekly Service</h3>
               <p className="text-3xl font-bold text-primary bg-muted/10 px-4 py-1 rounded-full">
@@ -52,7 +53,7 @@ const PricingPreview: React.FC = () => {
               </Link>
             </motion.div>
 
-            {/* Bi-Weekly Service */}
+            {/* Bi-Weekly */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -74,7 +75,7 @@ const PricingPreview: React.FC = () => {
               </Link>
             </motion.div>
 
-            {/* One-Time Cleanup */}
+            {/* One-Time */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -82,10 +83,12 @@ const PricingPreview: React.FC = () => {
               viewport={{ once: true, amount: 0.3 }}
               className="bg-muted/5 rounded-xl p-8 flex flex-col items-center space-y-6 md:pl-6 hover:scale-[1.02] hover:shadow-lg transition-transform"
             >
-              <span className="absolute top-4 right-4 bg-muted text-white text-xs px-2 py-0.5 rounded-full shadow">One-Time</span>
+              <div className="absolute top-4 right-4 bg-muted text-white text-xs px-2 py-0.5 rounded-full shadow">One-Time</div>
               <div className="text-accent"> <Sparkles className="w-6 h-6" /> </div>
               <h3 className="text-xl font-semibold text-secondary">One-Time Cleanup</h3>
-              <p className="text-3xl font-bold text-primary bg-muted/10 px-4 py-1 rounded-full">From $90</p>
+              <p className="text-3xl font-bold text-primary bg-muted/10 px-4 py-1 rounded-full">
+                Starting at $90
+              </p>
               <p className="text-muted text-sm text-balance">Perfect for spring cleanups or move-outs.</p>
               <Link
                 to="/booking?frequency=onetime"
@@ -97,14 +100,18 @@ const PricingPreview: React.FC = () => {
           </div>
         </div>
 
-        {/* Deep Clean Add-On */}
+        {/* Enzyme Add-On Highlight */}
         <div className="mt-10 max-w-2xl mx-auto bg-muted/5 border border-border rounded-lg p-4 text-sm text-muted">
-          🧼 Need extra freshness? Add a Deep Clean for <strong>$18</strong> — we use <strong>EZ-CLEAN™</strong>, a Canadian-made, pet-safe enzyme formula that breaks down bacteria, odors, and organic stains.
+          <span className="inline-flex items-center gap-1 font-semibold text-accent">
+            <Sparkles className="w-4 h-4" />
+            Enzyme Add-On:
+          </span>{" "}
+          Add a Deep Clean for <strong>$18</strong> — we use <strong>EZ-CLEAN™</strong>, a Canadian-made, pet-safe enzyme formula that breaks down bacteria, odors, and organic stains.
         </div>
 
-        {/* Refer-a-Friend Note with modal trigger */}
+        {/* Referral Note */}
         <div className="max-w-2xl mx-auto mt-4 bg-muted/5 border border-border rounded-lg p-4 text-sm text-muted">
-          💚 Refer a friend and you both save $10 —{' '}
+          💚 Refer a friend and you both save $10 —{" "}
           <button
             onClick={() => setShowModal(true)}
             className="text-primary underline font-medium hover:text-secondary transition"
@@ -113,23 +120,22 @@ const PricingPreview: React.FC = () => {
           </button>
         </div>
 
-        {/* Reusable Referral Modal */}
         <ReferralModal
           code={referralCode}
           isOpen={showModal}
           onClose={() => setShowModal(false)}
         />
 
-        {/* Pricing Disclaimer */}
+        {/* Disclaimer */}
         <p className="text-xs text-muted max-w-2xl mx-auto mt-10">
           Base rates shown. Final pricing is personalized based on your yard, pets, and preferences.
         </p>
 
-        {/* Extra CTA */}
+        {/* Fallback CTA */}
         <div className="pt-12">
           <div className="h-[1px] w-16 bg-accent/20 mx-auto mb-6" />
           <p className="text-sm text-muted">
-            Not sure what to pick?{' '}
+            Not sure what to pick?{" "}
             <Link to="/booking" className="text-secondary underline font-medium">
               See all service options in the booking form.
             </Link>

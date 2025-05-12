@@ -1,4 +1,3 @@
-// src/components/organisms/HowItWorks.tsx
 import React from "react";
 import { motion } from "framer-motion";
 import { MousePointerClick, Sparkles, Smile } from "lucide-react";
@@ -9,6 +8,7 @@ const HowItWorks: React.FC = () => {
       <div className="h-6 bg-gradient-to-t from-background to-white w-full -mt-6"></div>
       <section className="bg-white px-6 section-spacing border-t border-gray-100">
         <div className="max-w-5xl mx-auto space-y-12 text-center">
+          {/* Heading */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -23,7 +23,7 @@ const HowItWorks: React.FC = () => {
               Simple steps, spotless results.
             </p>
             <h2 className="text-4xl md:text-5xl font-bold text-primary">
-              How TidyTrails Works
+              How Your Yard Gets Poop-Free — The TidyTrails Way
             </h2>
             <motion.div
               className="w-16 h-1 bg-accent mx-auto rounded-full"
@@ -35,7 +35,8 @@ const HowItWorks: React.FC = () => {
             />
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 mt-10 text-left">
+          {/* Steps */}
+          <ol className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 mt-10 text-left">
             {[
               {
                 icon: (<MousePointerClick className="w-8 h-8 text-white" />),
@@ -56,7 +57,7 @@ const HowItWorks: React.FC = () => {
                 desc: "Guaranteed no poop left behind. Your grass is family ready.",
               },
             ].map((step, idx) => (
-              <motion.div
+              <motion.li
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -74,18 +75,23 @@ const HowItWorks: React.FC = () => {
                 </div>
                 <h3 className="text-lg font-semibold text-secondary">{step.title}</h3>
                 <p className="text-sm text-muted/80 leading-relaxed max-w-xs text-center md:text-left">{step.desc}</p>
-              </motion.div>
+              </motion.li>
             ))}
-          </div>
+          </ol>
 
+          {/* Scroll CTA */}
           <div className="pt-12">
             <div className="h-[2px] w-16 bg-accent/30 mx-auto mb-6"></div>
             <div className="text-center">
               <a
                 href="#pricing"
-                className="inline-block text-sm font-semibold text-primary underline hover:text-secondary transition"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="inline-block text-sm font-semibold text-primary hover:text-secondary underline transition"
               >
-                Choose your plan
+                💩 Ready to get started? Choose your plan →
               </a>
             </div>
           </div>

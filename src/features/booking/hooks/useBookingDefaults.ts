@@ -1,5 +1,3 @@
-// src/features/booking/hooks/useBookingDefaults.ts
-
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useBookingContext } from "@booking/context/BookingContext";
@@ -9,6 +7,7 @@ import { useBookingContext } from "@booking/context/BookingContext";
  * - Pulls referral code from URL and formats it
  * - Clears wasteLevel unless frequency is 'onetime'
  * - Ensures addOns array is always defined
+ * - Ensures dogCount defaults to 1
  */
 export const useBookingDefaults = () => {
   const { bookingData, updateBooking } = useBookingContext();
@@ -37,4 +36,11 @@ export const useBookingDefaults = () => {
       updateBooking({ addOns: [] });
     }
   }, [bookingData.addOns]);
+
+  // 4. Default dogCount to 1 if undefined
+  useEffect(() => {
+    if (bookingData.dogCount === undefined) {
+      updateBooking({ dogCount: 1 });
+    }
+  }, [bookingData.dogCount]);
 };

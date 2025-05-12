@@ -12,24 +12,28 @@ function parseLocalDate(val: unknown): unknown {
 }
 
 // Enums for strict values
-const FrequencyEnum   = z.enum(["weekly", "biweekly", "twice", "onetime"]);
-const WasteLevelEnum  = z.enum(["light", "moderate", "heavy"]);
-const AddOnEnum       = z.enum(["enzymeCleaner"]);
-const AreaEnum        = z.enum([
+const FrequencyEnum = z.enum(["weekly", "biweekly", "twice", "onetime"]);
+const WasteLevelEnum = z.enum(["light", "moderate", "heavy"]);
+const AddOnEnum = z.enum(["enzymeCleaner"]);
+const AreaEnum = z.enum([
   "Front Yard",
   "Back Yard",
   "Side Yard",
   "Patio/Driveway",
 ]);
+const CityEnum = z.enum(["Timmins", "South Porcupine", "Schumacher", "Porcupine"]);
 
-// Step 1: ServiceSelection (frequency, waste level if one-time)
+// Step 1: ServiceSelection
 export const serviceSelectionSchema = z
   .object({
-    frequency:  FrequencyEnum,
-    // dogCount removed from validation — always defaults in UI
+    frequency: FrequencyEnum,
+    dogCount: z
+      .number({ required_error: "Please enter how many dogs you have" })
+      .min(1, { message: "At least 1 dog must be selected" })
+      .max(6, { message: "Max 6 dogs allowed" }),
     wasteLevel: WasteLevelEnum.optional(),
-    addOns:     z.array(AddOnEnum).optional(),
-    areas:      z.array(AreaEnum).min(1, { message: "Please select at least one service area" }),
+    addOns: z.array(AddOnEnum).optional(),
+    areas: z.array(AreaEnum).min(1, { message: "Please select at least one service area" }),
   })
   .superRefine((data, ctx) => {
     if (data.frequency === "onetime" && !data.wasteLevel) {
@@ -49,7 +53,7 @@ export const serviceSelectionSchema = z
     }
   });
 
-// Step 2: CalendarPicker (convert to Date, enforce tomorrow+ and weekends only)
+// Step 2: CalendarPicker
 export const calendarSchema = z.object({
   firstServiceDate: z.preprocess(
     parseLocalDate,
@@ -69,11 +73,11 @@ export const calendarSchema = z.object({
   ),
 });
 
-// Step 3: CustomerForm (all personal details)
+// Step 3: CustomerForm
 export const customerInfoSchema = z.object({
-  firstName:          z.string().trim().min(1, { message: "First name is required" }),
-  lastName:           z.string().trim().min(1, { message: "Last name is required" }),
-  phone:              z.preprocess(
+  firstName: z.string().trim().min(1, { message: "First name is required" }),
+  lastName: z.string().trim().min(1, { message: "Last name is required" }),
+  phone: z.preprocess(
     (val) => {
       if (typeof val === "string") {
         const digits = val.replace(/\D/g, "");
@@ -83,23 +87,34 @@ export const customerInfoSchema = z.object({
       }
       return val;
     },
-    z.string().regex(/^(\(\d{3}\) \d{3}-\d{4})$/, { message: "Phone must be in the format (###) ###-####" })
+    z.string().regex(/^(\(\d{3}\) \d{3}-\d{4})$/, {
+      message: "Phone must be in the format (###) ###-####",
+    })
   ),
-  email:              z.string().trim().email({ message: "Invalid email address" }),
-  address:            z.string().min(5, { message: "Address must be at least 5 characters" })
-                         .refine((addr) => /\d+/.test(addr), { message: "Address must include a street number" }),
-  unit:               z.string().optional(),
-  city:               z.string().trim().min(1, { message: "City is required" }),
-  specialInstructions:z.string().max(200, { message: "Special instructions too long" }).optional(),
-  preferredContact:   z.enum(["call", "text", "email"]),
-  bestTime:           z.enum(["morning", "afternoon", "evening"]),
-  dogNames:           z.string().optional(),
-  marketingOptIn:     z.boolean(),
-  referralCode:       z.string()
-                         .min(3, { message: "Referral code must be between 3 and 10 characters" })
-                         .max(10, { message: "Referral code must be between 3 and 10 characters" })
-                         .optional(),
+  email: z.string().trim().email({ message: "Invalid email address" }),
+  address: z
+    .string()
+    .min(5, { message: "Address must be at least 5 characters" })
+    .refine((addr) => /\d+/.test(addr), { message: "Address must include a street number" }),
+  unit: z.string().optional(),
+  city: z
+  .string()
+  .min(1, { message: "City is required" })
+  .refine((val): val is z.infer<typeof CityEnum> => CityEnum.options.includes(val as any), {
+    message: "Please select a valid city from the list",
+  }),
+  specialInstructions: z.string().max(200, { message: "Special instructions too long" }).optional(),
+  preferredContact: z.enum(["call", "text", "email"]),
+  bestTime: z.enum(["morning", "afternoon", "evening"]),
+  dogNames: z.string().optional(),
+  marketingOptIn: z.boolean(),
+  referralCode: z
+    .string()
+    .min(3, { message: "Referral code must be between 3 and 10 characters" })
+    .max(10, { message: "Referral code must be between 3 and 10 characters" })
+    .optional(),
 });
+
 
 // Combined for final submission
 export const fullBookingSchema = serviceSelectionSchema

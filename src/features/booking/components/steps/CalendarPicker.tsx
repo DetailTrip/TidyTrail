@@ -6,7 +6,7 @@ import { useAvailability, DayAvailability } from "@booking/hooks/useAvailability
 import { calendarSchema } from "@utils/validation";
 import { ZodError } from "zod";
 
-// Parse a YYYY-MM-DD string into a local Date at midnight
+// Shared utility functions (could be moved to utils/dateHelpers.ts)
 function parseLocalDate(dateStr: string): Date {
   const [year, month, day] = dateStr.split("-");
   return new Date(Number(year), Number(month) - 1, Number(day));
@@ -20,7 +20,10 @@ function isWeekend(dateStr: string): boolean {
 
 const CalendarPicker: React.FC = () => {
   const { bookingData, updateBooking } = useBookingContext();
-  const today = new Date().toISOString().split("T")[0];
+
+  const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000)
+    .toISOString()
+    .split("T")[0];
 
   const [selectedDate, setSelectedDate] = useState<string>(bookingData.firstServiceDate || "");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -29,31 +32,46 @@ const CalendarPicker: React.FC = () => {
   const availability: DayAvailability | null = data ?? null;
 
   const handleDateChange = (value: string) => {
+    setSelectedDate(value);
+
+    if (!value) {
+      setErrorMessage("Please select a date.");
+      return;
+    }
+
     if (!isWeekend(value)) {
       setErrorMessage("Please select a Saturday or Sunday.");
       return;
     }
 
-    setSelectedDate(value);
+    if (availability && !availability.available) {
+      setErrorMessage("That date is fully booked.");
+      return;
+    }
+
     updateBooking({ firstServiceDate: value });
     setErrorMessage(null);
   };
 
   return (
     <div className="max-w-md mx-auto p-6 space-y-6 text-center">
-      <h2 className="text-2xl font-bold text-primary">📅 First Cleanup Date</h2>
-      <p className="text-sm text-gray-600">
+      <h2 className="text-2xl font-bold text-primary">
+        <span role="img" aria-label="calendar">📅</span> First Cleanup Date
+      </h2>
+
+      <p className="text-sm text-muted">
         We scoop on weekends! Choose a <strong>Saturday</strong> or <strong>Sunday</strong> for your first visit.
       </p>
 
-      <div className="bg-mist border border-border rounded-lg p-6">
-        <label htmlFor="first-cleanup-date" className="block text-sm font-medium text-gray-700 mb-2">
+      <div className="bg-tidy-mist border border-border rounded-lg p-6">
+        <label htmlFor="first-cleanup-date" className="block text-sm font-medium text-muted mb-2">
           Select a date:
         </label>
+
         <input
           id="first-cleanup-date"
           type="date"
-          min={today}
+          min={tomorrow}
           value={selectedDate}
           onChange={(e) => handleDateChange(e.target.value)}
           className="border border-border p-3 rounded-md w-full bg-white text-center shadow-sm"
@@ -64,7 +82,7 @@ const CalendarPicker: React.FC = () => {
         </p>
 
         {isLoading && (
-          <p className="mt-3 text-sm text-gray-500" aria-live="polite">
+          <p className="mt-3 text-sm text-muted" aria-live="polite">
             🌀 Checking availability...
           </p>
         )}
@@ -72,12 +90,6 @@ const CalendarPicker: React.FC = () => {
         {isError && (
           <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded" aria-live="polite">
             ❌ Error loading availability. Please try again.
-          </p>
-        )}
-
-        {selectedDate && !isWeekend(selectedDate) && (
-          <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded" aria-live="polite">
-            ❌ Please choose a <strong>Saturday</strong> or <strong>Sunday</strong>.
           </p>
         )}
 
@@ -101,7 +113,7 @@ const CalendarPicker: React.FC = () => {
   );
 };
 
-// ✅ Zod validation function for this step
+// ✅ Step-level validator
 export const validate = (data: any) => {
   try {
     calendarSchema.parse(data);

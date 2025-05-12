@@ -1,9 +1,15 @@
 // src/features/booking/components/steps/ReviewStep.tsx
 
-import React, { useEffect } from "react";
+/** @jsxImportSource react */
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "@booking/context/BookingContext";
-import { calculatePricing, Frequency, WasteLevel } from "@booking/utils/pricingLogic";
+import {
+  calculatePricing,
+  Frequency,
+  WasteLevel,
+  getFinalTotal,
+} from "@booking/utils/pricingLogic";
 import { useBookAppointment } from "@booking/hooks/useBookAppointment";
 import { fullBookingSchema } from "@utils/validation";
 import { transformBookingData } from "@booking/utils/transformBookingData";
@@ -19,54 +25,36 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ goBack, goToStep }) => {
   const { mutate, status, isSuccess, isError, error } = useBookAppointment();
   const isLoading = status === "pending";
   const navigate = useNavigate();
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isSuccess) navigate("/thank-you");
+    if (isSuccess) {
+      localStorage.removeItem("tidytrails-booking-draft");
+      localStorage.removeItem("tidyDraft");
+      navigate("/thank-you");
+    }
   }, [isSuccess, navigate]);
 
   const handleConfirm = () => {
     try {
       fullBookingSchema.parse(bookingData);
 
-      const pricing = calculatePricing({
+      const finalTotalDueNow = getFinalTotal({
         frequency: bookingData.frequency as Frequency,
-        dogCount: bookingData.dogCount!,
+        dogCount: bookingData.dogCount ?? 1,
         wasteLevel: bookingData.wasteLevel as WasteLevel,
         addOns: bookingData.addOns,
         referralCode: bookingData.referralCode,
         prepaySelected: bookingData.prepaySelected,
       });
 
-      const isRecurring = ["weekly", "biweekly", "twice"].includes(bookingData.frequency as Frequency);
-      const enzymeAddOn = pricing.oneTimeAddOnsTotal ?? 0;
-
-      const visitsPerMonth =
-        bookingData.frequency === "weekly"
-          ? 4
-          : bookingData.frequency === "biweekly"
-          ? 2
-          : bookingData.frequency === "twice"
-          ? 8
-          : 1;
-
-      const discountedPricePerVisit = bookingData.prepaySelected
-        ? pricing.finalPricePerVisit * 0.9
-        : pricing.finalPricePerVisit;
-
-      const totalDueToday = isRecurring
-        ? (bookingData.prepaySelected
-            ? discountedPricePerVisit * visitsPerMonth * 3
-            : discountedPricePerVisit * visitsPerMonth)
-        : pricing.finalPricePerVisit + enzymeAddOn;
-
-      const referralDiscount = bookingData.referralCode ? 10 : 0;
-      const finalTotalDueNow = totalDueToday - referralDiscount;
-
       const payload = transformBookingData(bookingData, finalTotalDueNow);
       mutate(payload);
     } catch (e) {
       console.error("Final validation failed:", e);
-      alert("Please double-check your form — some required fields are missing or invalid.");
+      setValidationError(
+        "Please double-check your form — some required fields are missing or invalid."
+      );
     }
   };
 
@@ -79,7 +67,6 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ goBack, goToStep }) => {
         <p className="text-sm text-gray-600">Take a final look and confirm your details.</p>
       </div>
 
-      {/* Prepay Option */}
       {isPrepayEligible && (
         <section className="space-y-3 pt-6 border-t border-border">
           <h3 className="text-lg font-semibold">💸 Save with Prepay</h3>
@@ -101,7 +88,6 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ goBack, goToStep }) => {
         </section>
       )}
 
-      {/* Summary Section */}
       <section className="space-y-3 pt-6 border-t border-border">
         <h3 className="text-lg font-semibold">📋 Summary</h3>
         <BookingSummary
@@ -111,11 +97,20 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ goBack, goToStep }) => {
         />
       </section>
 
-      {/* Final CTA */}
       <section className="space-y-4 pt-6 border-t border-border">
         <p className="text-center text-sm text-gray-500">
           ✅ Everything look good? Let’s get your yard poop-free!
         </p>
+
+        {validationError && (
+          <div
+            className="text-sm text-red-600 text-center bg-red-50 border border-red-200 rounded px-4 py-2"
+            aria-live="polite"
+          >
+            ❗ {validationError}
+          </div>
+        )}
+
         <button
           onClick={goBack}
           className="w-full border border-gray-300 text-gray-700 py-2 px-6 rounded hover:bg-gray-100"

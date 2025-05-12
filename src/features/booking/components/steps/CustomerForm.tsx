@@ -21,27 +21,6 @@ const CustomerForm: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const saved = localStorage.getItem("tidyDraft");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (typeof parsed.marketingOptIn === "undefined") {
-          parsed.marketingOptIn = false;
-        }
-        Object.entries(parsed).forEach(([key, value]) => {
-          updateBooking({ [key]: value });
-        });
-      } catch (e) {
-        console.warn("Could not parse saved draft");
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("tidyDraft", JSON.stringify(bookingData));
-  }, [bookingData]);
-
   const handleChange = (field: keyof typeof bookingData, value: any) => {
     updateBooking({ [field]: value });
   };
@@ -62,7 +41,7 @@ const CustomerForm: React.FC = () => {
     <div className="max-w-2xl mx-auto p-6 space-y-10">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-primary">👤 Your Details</h2>
-        <p className="text-sm text-gray-600">We’ll use this to confirm your booking and keep you updated.</p>
+        <p className="text-sm text-muted">We’ll use this to confirm your booking and keep you updated.</p>
       </div>
 
       {/* Contact Info */}
@@ -118,7 +97,7 @@ const CustomerForm: React.FC = () => {
               aria-invalid={!!errors.phone}
               aria-describedby="phone-error"
             />
-            <p className="text-xs text-gray-500 mt-1">We’ll only contact you for booking reminders.</p>
+            <p className="text-xs text-muted mt-1">We’ll only contact you for booking reminders.</p>
             {errors.phone && <p id="phone-error" className="text-sm text-red-600 mt-1">{errors.phone}</p>}
           </div>
           <div>
@@ -134,7 +113,7 @@ const CustomerForm: React.FC = () => {
               aria-invalid={!!errors.email}
               aria-describedby="email-error"
             />
-            <p className="text-xs text-gray-500 mt-1">We’ll never share your info. Used only for booking & reminders.</p>
+            <p className="text-xs text-muted mt-1">We’ll never share your info. Used only for booking & reminders.</p>
             {errors.email && <p id="email-error" className="text-sm text-red-600 mt-1">{errors.email}</p>}
           </div>
         </fieldset>
@@ -154,7 +133,10 @@ const CustomerForm: React.FC = () => {
               required
               autoComplete="street-address"
               className="w-full border p-3 rounded focus:ring-2 focus:ring-accent focus:outline-none transition"
+              aria-invalid={!!errors.address}
+              aria-describedby="address-error"
             />
+            {errors.address && <p id="address-error" className="text-sm text-red-600 mt-1">{errors.address}</p>}
           </div>
           <div>
             <label htmlFor="unit">Unit / Apt #</label>
@@ -177,10 +159,13 @@ const CustomerForm: React.FC = () => {
             required
             autoComplete="address-level2"
             className="w-full border p-3 rounded focus:ring-2 focus:ring-accent focus:outline-none transition"
+            aria-invalid={!!errors.city}
+            aria-describedby="city-error"
           />
           <datalist id="city-options">
             {cities.map((c) => <option key={c} value={c} />)}
           </datalist>
+          {errors.city && <p id="city-error" className="text-sm text-red-600 mt-1">{errors.city}</p>}
         </div>
       </section>
 
@@ -207,6 +192,7 @@ const CustomerForm: React.FC = () => {
               </label>
             ))}
           </div>
+          {errors.preferredContact && <p className="text-sm text-red-600 mt-2">{errors.preferredContact}</p>}
         </fieldset>
         <div>
           <label htmlFor="bestTime" className="label-required">Best Time to Reach</label>
@@ -216,11 +202,14 @@ const CustomerForm: React.FC = () => {
             onChange={(e) => handleChange("bestTime", e.target.value)}
             required
             className="w-full border p-3 rounded focus:ring-2 focus:ring-accent focus:outline-none transition"
+            aria-invalid={!!errors.bestTime}
+            aria-describedby="bestTime-error"
           >
             {timesOfDay.map((time) => (
               <option key={time} value={time}>{time.charAt(0).toUpperCase() + time.slice(1)}</option>
             ))}
           </select>
+          {errors.bestTime && <p id="bestTime-error" className="text-sm text-red-600 mt-1">{errors.bestTime}</p>}
         </div>
       </section>
 
@@ -235,10 +224,13 @@ const CustomerForm: React.FC = () => {
             value={bookingData.specialInstructions || ""}
             onChange={(e) => handleChange("specialInstructions", e.target.value)}
             className="w-full border p-3 rounded focus:ring-2 focus:ring-accent focus:outline-none transition"
+            aria-invalid={!!errors.specialInstructions}
+            aria-describedby="specialInstructions-error"
           />
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-muted mt-1">
             Optional notes like locked gates, pet access, or timing preferences.
           </p>
+          {errors.specialInstructions && <p id="specialInstructions-error" className="text-sm text-red-600 mt-1">{errors.specialInstructions}</p>}
         </div>
         <div>
           <label htmlFor="dogNames">Dog’s Name(s)</label>
@@ -250,7 +242,7 @@ const CustomerForm: React.FC = () => {
             placeholder="Comma-separated"
             className="w-full border p-3 rounded focus:ring-2 focus:ring-accent focus:outline-none transition"
           />
-          <p className="text-xs text-gray-500 mt-1">So we can say hi properly 🐶</p>
+          <p className="text-xs text-muted mt-1">So we can say hi properly 🐶</p>
         </div>
         <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 flex items-start gap-3">
           <input
@@ -260,7 +252,7 @@ const CustomerForm: React.FC = () => {
             onChange={(e) => handleChange("marketingOptIn", e.target.checked)}
             className="mt-1 w-4 h-4"
           />
-          <label htmlFor="marketingOptIn" className="text-sm text-gray-700">
+          <label htmlFor="marketingOptIn" className="text-sm text-primary">
             <strong>Yes!</strong> Sign me up for occasional promotions and seasonal deals.
           </label>
         </div>
@@ -270,23 +262,28 @@ const CustomerForm: React.FC = () => {
 };
 
 export const validate = (data: any) => {
-  try {
-    customerInfoSchema.parse(data);
-    if (lastSetErrors) lastSetErrors({});
-    return true;
-  } catch (err: any) {
-    const fieldErrors: { [key: string]: string } = {};
-    if (err?.flatten) {
-      const flat = err.flatten();
-      for (const key in flat.fieldErrors) {
-        if (flat.fieldErrors[key]?.[0]) {
-          fieldErrors[key] = flat.fieldErrors[key][0];
+  return new Promise<boolean>((resolve) => {
+    setTimeout(() => {
+      try {
+        customerInfoSchema.parse(data);
+        if (lastSetErrors) lastSetErrors({});
+        resolve(true);
+      } catch (err: any) {
+        const fieldErrors: { [key: string]: string } = {};
+        if (err?.flatten) {
+          const flat = err.flatten();
+          for (const key in flat.fieldErrors) {
+            if (flat.fieldErrors[key]?.[0]) {
+              fieldErrors[key] = flat.fieldErrors[key][0];
+            }
+          }
         }
+        if (lastSetErrors) lastSetErrors(fieldErrors);
+        resolve(false);
       }
-    }
-    if (lastSetErrors) lastSetErrors(fieldErrors);
-    return false;
-  }
+    }, 0); // Give React a tick to mount component and register `setErrors`
+  });
 };
+
 
 export default CustomerForm;

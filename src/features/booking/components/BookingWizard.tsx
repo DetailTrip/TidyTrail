@@ -44,6 +44,10 @@ const BookingWizard: React.FC = () => {
     }
   }, [searchParams, bookingData.frequency, bookingData.referralCode, updateBooking]);
 
+  useEffect(() => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}, [currentStep]);
+
   const goNext = async () => {
     const isValid = await validateStep(currentStep);
     if (isValid) {

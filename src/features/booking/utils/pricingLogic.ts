@@ -22,6 +22,16 @@ export interface PriceBreakdown {
   oneTimeAddOnsTotal?: number;
 }
 
+// 🔁 Shared helper
+export const getVisitsPerMonth = (frequency: Frequency): number => {
+  switch (frequency) {
+    case "weekly": return 4;
+    case "biweekly": return 2;
+    case "twice": return 8;
+    default: return 1; // onetime or fallback
+  }
+};
+
 export const calculatePricing = ({
   frequency,
   dogCount,
@@ -30,33 +40,19 @@ export const calculatePricing = ({
   prepaySelected,
 }: PricingInput): PriceBreakdown => {
   let basePricePerVisit = 0;
-  let visitsPerMonth = 0;
-
   switch (frequency) {
-    case "weekly":
-      basePricePerVisit = 24;
-      visitsPerMonth = 4;
-      break;
-    case "biweekly":
-      basePricePerVisit = 45;
-      visitsPerMonth = 2;
-      break;
-    case "twice":
-      basePricePerVisit = 20;
-      visitsPerMonth = 8;
-      break;
-    case "onetime":
-      basePricePerVisit = 90;
-      visitsPerMonth = 1;
-      break;
+    case "weekly": basePricePerVisit = 24; break;
+    case "biweekly": basePricePerVisit = 45; break;
+    case "twice": basePricePerVisit = 20; break;
+    case "onetime": basePricePerVisit = 90; break;
   }
+
+  const visitsPerMonth = getVisitsPerMonth(frequency);
 
   let dogSurcharge = 0;
-  if (frequency !== "onetime") {
-    if (dogCount === 3) dogSurcharge = 5;
-    else if (dogCount === 4) dogSurcharge = 10;
-    else if (dogCount >= 5) dogSurcharge = 15;
-  }
+  if (dogCount === 3) dogSurcharge = 5;
+  else if (dogCount === 4) dogSurcharge = 10;
+  else if (dogCount >= 5) dogSurcharge = 15;
 
   let wasteSurcharge = 0;
   if (frequency === "onetime") {
@@ -65,20 +61,15 @@ export const calculatePricing = ({
   }
 
   const oneTimeAddOnsTotal = addOns.includes("enzymeCleaner") ? 18 : 0;
-
   const finalPricePerVisit = basePricePerVisit + dogSurcharge + wasteSurcharge;
 
   let estimatedMonthlyTotal =
     frequency !== "onetime" ? finalPricePerVisit * visitsPerMonth : undefined;
 
   let prepayDiscountAmount = 0;
-  if (
-    prepaySelected &&
-    (frequency === "weekly" || frequency === "biweekly" || frequency === "twice") &&
-    estimatedMonthlyTotal
-  ) {
+  if (prepaySelected && estimatedMonthlyTotal) {
     prepayDiscountAmount = estimatedMonthlyTotal * 0.1;
-    estimatedMonthlyTotal = estimatedMonthlyTotal - prepayDiscountAmount;
+    estimatedMonthlyTotal -= prepayDiscountAmount;
   }
 
   return {
@@ -90,4 +81,43 @@ export const calculatePricing = ({
     prepayDiscountAmount,
     oneTimeAddOnsTotal,
   };
+};
+
+// ✅ Unified total calculator
+export const getFinalTotal = ({
+  frequency,
+  dogCount,
+  wasteLevel,
+  addOns = [],
+  referralCode,
+  prepaySelected,
+}: PricingInput): number => {
+  const pricing = calculatePricing({
+    frequency,
+    dogCount,
+    wasteLevel,
+    addOns,
+    prepaySelected,
+  });
+
+  const isRecurring = frequency !== "onetime";
+  const visitsPerMonth = getVisitsPerMonth(frequency);
+
+  const discountedPricePerVisit = prepaySelected
+    ? pricing.finalPricePerVisit * 0.9
+    : pricing.finalPricePerVisit;
+
+  const enzymeAddOn = pricing.oneTimeAddOnsTotal ?? 0;
+
+  const serviceSubtotal = isRecurring
+    ? (prepaySelected
+        ? discountedPricePerVisit * visitsPerMonth * 3
+        : discountedPricePerVisit * visitsPerMonth)
+    : pricing.finalPricePerVisit;
+
+  const totalBeforeDiscount = serviceSubtotal + enzymeAddOn;
+
+  const referralDiscount = referralCode?.trim() ? 10 : 0;
+
+  return totalBeforeDiscount - referralDiscount;
 };

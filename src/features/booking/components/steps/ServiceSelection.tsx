@@ -10,6 +10,7 @@ import { useBookingContext } from "@booking/context/BookingContext";
 import { useBookingDefaults } from "@booking/hooks/useBookingDefaults";
 import { Check } from "lucide-react";
 
+// --- Constants ---
 const frequencies = [
   { label: "Weekly", value: "weekly", icon: "🗓️" },
   { label: "Bi-Weekly", value: "biweekly", icon: "📆" },
@@ -26,10 +27,12 @@ const wasteLevels = [
 type Area = "Front Yard" | "Back Yard" | "Side Yard" | "Patio/Driveway";
 const areas: Area[] = ["Front Yard", "Back Yard", "Side Yard", "Patio/Driveway"];
 
+// --- Component ---
 const ServiceSelection: React.FC = () => {
   const { bookingData, updateBooking } = useBookingContext();
   useBookingDefaults();
-  const [dogCount, setDogCount] = useState(bookingData.dogCount || 1);
+
+  const [dogCount, setDogCount] = useState(bookingData.dogCount ?? 1);
 
   const {
     watch,
@@ -42,7 +45,7 @@ const ServiceSelection: React.FC = () => {
       ...bookingData,
       areas: (bookingData.areas?.filter(
         (a): a is Area => areas.includes(a as Area)
-      ) ?? []) as ("Front Yard" | "Back Yard" | "Side Yard" | "Patio/Driveway")[],
+      ) ?? []) as Area[],
       addOns: (bookingData.addOns?.filter(
         (a): a is "enzymeCleaner" => a === "enzymeCleaner"
       ) ?? []) as ("enzymeCleaner")[],
@@ -53,8 +56,18 @@ const ServiceSelection: React.FC = () => {
   const watched = watch() as z.infer<typeof serviceSelectionSchema> & { referralCode?: string };
 
   useEffect(() => {
-    updateBooking({ ...watched, dogCount });
-  }, [watched, dogCount, updateBooking]);
+  const timeout = setTimeout(() => {
+    const updated = { ...watched, dogCount };
+
+    // Avoid repeated updates if nothing changed
+    if (JSON.stringify(bookingData) !== JSON.stringify(updated)) {
+      updateBooking(updated);
+    }
+  }, 100);
+
+  return () => clearTimeout(timeout);
+}, [watched, dogCount, bookingData, updateBooking]);
+
 
   const toggleArea = (area: Area) => {
     const updated = watched.areas?.includes(area)
@@ -72,6 +85,7 @@ const ServiceSelection: React.FC = () => {
         </div>
       )}
 
+      {/* Frequency */}
       <fieldset>
         <legend className="text-2xl font-bold text-center">How often should we scoop?</legend>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
@@ -85,14 +99,14 @@ const ServiceSelection: React.FC = () => {
                 aria-pressed={isSelected}
                 className={`rounded-xl border p-4 flex items-center justify-between transition text-left font-semibold ${
                   isSelected
-                    ? "ring-2 ring-green-500 border-green-500 bg-white shadow-md"
+                    ? "ring-2 ring-primary border-primary bg-white shadow-md"
                     : "border-gray-300 hover:bg-gray-50 hover:shadow-sm"
                 }`}
               >
                 <span className="inline-flex items-center gap-2">
                   {freq.icon} {freq.label}
                 </span>
-                {isSelected && <Check className="w-5 h-5 text-green-500" />}
+                {isSelected && <Check className="w-5 h-5 text-primary" />}
               </button>
             );
           })}
@@ -100,6 +114,7 @@ const ServiceSelection: React.FC = () => {
         {errors.frequency && <p className="text-sm text-red-600 mt-2">{errors.frequency.message}</p>}
       </fieldset>
 
+      {/* Waste Level */}
       {watched.frequency === "onetime" && (
         <fieldset>
           <legend className="text-lg font-semibold mb-2">What’s the poop situation?</legend>
@@ -110,16 +125,16 @@ const ServiceSelection: React.FC = () => {
                 key={level.value}
                 onClick={() => setValue("wasteLevel", level.value as WasteLevel)}
                 aria-pressed={watched.wasteLevel === level.value}
-                className={`p-4 rounded-lg shadow-sm border transition text-left bg-mist ${
+                className={`p-4 rounded-lg shadow-sm border transition text-left bg-tidy-mist ${
                   watched.wasteLevel === level.value
-                    ? "ring-2 ring-green-500 border-green-500"
+                    ? "ring-2 ring-primary border-primary"
                     : "hover:bg-gray-100"
                 }`}
               >
                 <div className="text-lg font-semibold">
                   {level.icon} {level.label}
                 </div>
-                <p className="text-sm text-gray-600 mt-1">{level.description}</p>
+                <p className="text-sm text-muted mt-1">{level.description}</p>
               </button>
             ))}
           </div>
@@ -127,13 +142,15 @@ const ServiceSelection: React.FC = () => {
         </fieldset>
       )}
 
-      <fieldset className="bg-mist border border-accent px-4 py-4 rounded-xl">
+      {/* Dog Count */}
+      <fieldset className="bg-tidy-mist border border-accent px-4 py-4 rounded-xl">
         <legend className="text-lg font-semibold mb-2">🐕‍🦺 How many dogs?</legend>
         <div className="flex justify-center items-center gap-4">
           <button
             type="button"
             onClick={() => setDogCount(Math.max(dogCount - 1, 1))}
-            className="bg-gray-200 hover:ring-2 hover:ring-green-400 w-10 h-10 rounded-full text-lg"
+            className="bg-gray-200 hover:ring-2 hover:ring-primary w-10 h-10 rounded-full text-lg"
+            aria-describedby="dogCount-error"
           >
             -
           </button>
@@ -142,14 +159,18 @@ const ServiceSelection: React.FC = () => {
             type="button"
             onClick={() => setDogCount(Math.min(dogCount + 1, 6))}
             disabled={dogCount === 6}
-            className="bg-gray-200 w-10 h-10 rounded-full text-lg hover:ring-2 hover:ring-green-400"
+            className="bg-gray-200 w-10 h-10 rounded-full text-lg hover:ring-2 hover:ring-primary"
+            aria-describedby="dogCount-error"
           >
             +
           </button>
         </div>
-        <p className="text-sm text-gray-500 text-center mt-1">Used to calculate your price.</p>
+        <p className="text-sm text-muted text-center mt-1" id="dogCount-error">
+          Used to calculate your price.
+        </p>
       </fieldset>
 
+      {/* Yard Areas */}
       <fieldset>
         <legend className="text-lg font-semibold mb-2">🏡 What parts of the yard?</legend>
         <div className="flex flex-wrap gap-3 justify-center">
@@ -159,11 +180,11 @@ const ServiceSelection: React.FC = () => {
               key={area}
               onClick={() => toggleArea(area)}
               className={`px-4 py-2 border rounded-full transition ${
-                watched.areas?.includes(area as "Front Yard" | "Back Yard" | "Side Yard" | "Patio/Driveway")
-                  ? "bg-mist border-green-500"
+                watched.areas?.includes(area)
+                  ? "bg-tidy-mist border-primary"
                   : "hover:bg-gray-100"
               }`}
-              aria-pressed={watched.areas?.includes(area as "Front Yard" | "Back Yard" | "Side Yard" | "Patio/Driveway")}
+              aria-pressed={watched.areas?.includes(area)}
             >
               {area}
             </button>
@@ -172,9 +193,10 @@ const ServiceSelection: React.FC = () => {
         {errors.areas && <p className="text-sm text-red-600 text-center mt-2">{errors.areas.message}</p>}
       </fieldset>
 
+      {/* Enzyme Add-On */}
       <fieldset className="pt-4">
         <legend className="text-lg font-semibold mb-4 flex items-center justify-center gap-2">
-          <span role="img" aria-label="sparkles">🧬</span> Deep Clean Add-On
+          <span role="img" aria-label="enzyme">🧬</span> Deep Clean Add-On
         </legend>
         <button
           type="button"
@@ -183,9 +205,9 @@ const ServiceSelection: React.FC = () => {
             const updated = checked ? [] : ["enzymeCleaner"];
             setValue("addOns", updated as ("enzymeCleaner")[]);
           }}
-          className={`w-full text-left bg-mist rounded-xl p-4 shadow-sm transition flex items-start gap-4 cursor-pointer ${
+          className={`w-full text-left bg-tidy-mist rounded-xl p-4 shadow-sm transition flex items-start gap-4 cursor-pointer ${
             watched.addOns?.includes("enzymeCleaner")
-              ? "ring-2 ring-green-500 border-green-500 bg-white"
+              ? "ring-2 ring-primary border-primary bg-white"
               : "border border-gray-300 hover:border-accent/60 hover:ring-1 hover:ring-accent/30 hover:bg-white"
           }`}
           aria-pressed={watched.addOns?.includes("enzymeCleaner")}
@@ -195,7 +217,7 @@ const ServiceSelection: React.FC = () => {
             <div className="font-semibold text-md">
               Add Enzyme Cleaner <span className="text-sm font-normal text-muted">(+\$18)</span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-muted mt-1">
               EZ-CLEAN™ is a Canadian-made, pet-safe enzyme spray that breaks down odors,
               bacteria, and organic waste.
             </p>
